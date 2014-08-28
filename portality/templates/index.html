@@ -1,0 +1,151 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div id="indexcontent">
+
+    <div class="container" style="padding-bottom:40px;">
+        <div class="content">
+    
+          <div class="row">
+            <div class="col-md-6">
+              <div class="jumbotron" style="background-color:#ef5b23;min-height:400px;">
+                <img src="/static/header_needaccess.png">
+                <h2 style="padding-top:17px;color:white;">Tearing down barriers to research, one click at a time</h2>
+              </div>
+            </div>
+    
+            <div class="col-md-1">
+            </div>
+            
+            <div class="col-md-5">
+              <div class="well" style="min-height:400px;">
+    
+                <p><input id="id_name" name="name" placeholder="Name (required, preferably full name)" type="text" class="form-control"></p>
+                <p><input id="id_email" name="email" placeholder="Email address (required)" type="text" class="form-control"></p>
+                <p><select id="id_profession" name="profession" class="form-control">
+                    <option value="Student">Student</option>
+                    <option value="Doctor">Doctor</option>
+                    <option value="Patient">Patient</option>
+                    <option value="Advocate">Advocate</option>
+                    <option value="Academic">Academic</option>
+                    <option value="Researcher">Researcher</option>
+                    <option value="Librarian">Librarian</option>
+                    <option value="Other">Other</option>
+                    <option value="Undisclosed">Prefer not to say</option>
+                </select></p>
+                <div class="checkbox"><input id="id_confirm_public" name="confirm_public" type="checkbox" />
+                <label for="id_confirm_public" class="confirm-label">I understand that information obtained by this button will be publicly accessible</label>
+                </div>
+                <div class="checkbox"><input checked="checked" id="id_mailinglist" name="mailinglist" type="checkbox" />
+                <label for="id_mailinglist" class="mailinglist-label">I would like to be added to the Open Access Button Mailing List</label>
+                </div>
+                <p>Your e-mail address <u>will not</u> be publicised or shared with third parties.</p>
+                <p><button type="submit" class="btn btn-lg btn-primary btn-block">Get your personal Open Access Button</button></p>
+              </div>
+            </div>
+          </div>
+    
+          <div class="row">
+            <div class="col-md-12">
+                <p>Sign up to get the Open Access Button, a safe, easy to use browser bookmarklet that 
+                you can use to show the global effects of research paywalls - and to help get access to the 
+                research you need. Every time you hit a paywall blocking your research, click the button. 
+                Fill out a short form, add your experience to the map along with thousands of others. 
+                Then use our tools to search for access to papers, and spread the word with social media. 
+                Every person who uses the Open Access Button brings us closer to changing the system.</p>
+                
+                <p>This bit will be updated to explain why people should use the button - new features etc.
+                Maybe add that video in here, or a new one.</p>
+            </div>
+          </div>
+    
+        </div>
+    </div>
+
+
+
+
+
+    <div style="padding-top:40px;padding-bottom:40px;background-color:#ffd;">
+      <div class="container">
+          <div class="content">
+            <div class="row">
+              <div class="col-md-6">
+                <h2>What is this about?</h2>
+                <p>People are denied access to research hidden behind paywalls every day. This problem is invisible, but it slows innovation, kills curiosity and harms patients. This is an indictment of the current system.
+                <a href="http://www.youtube.com/watch?v=L5rVH1KGBCY">Open Access </a>has given us the solution to this problem by allowing everyone to read and re-use research. 
+                We created the 
+                <i>Open Access Button </i>to track the impact of paywalls and help you get access to the research you need. By using the button you’ll help show the impact of this problem, drive awareness of the issue, and help change the system. Furthermore, the 
+                <i>Open Access Button </i>has several ways of helping you get access to the research you need right now. </p>    
+              </div>
+              
+              <div class="col-md-6">
+                <h2>Get involved</h2>
+                <p>This project was made possible by developers, advocates, students and general clever folk from Open community 
+                and we need continued support to take this to the next level. Of course, the code, text, and data we’ve pulled 
+                together are openly available, so you can innovate and advocate with it. If you can, donate to the project to 
+                help us support and maintain service as well as helping us with our future development plans. Bottom line, we’d 
+                love to hear from you, so whether it’s a suggestion, virtual pat on the back, or, dare I say a bug you’ve noticed, 
+                get in touch.</p>
+    
+                <a href="https://www.charitycheckout.co.uk/1111824/OpenAccessButton">
+                <button type="button" class="btn btn-warning donate">Donate!</button></a>
+    
+                <a href="mailto:oabutton+suggestion@gmail.com">
+                <button type="button" class="btn btn-success suggest">Suggestions</button></a>
+    
+                <a href="mailto:oabutton+bugs@gmail.com?subject=OAButton Bug Report">
+                <button type="button" class="btn btn-default bug">Report a bug</button></a>            
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+
+
+
+
+    <div style="padding-top:40px;padding-bottom:40px;">
+      <div class="container">
+          <div class="content">
+            <div class="row">
+              <div class="col-md-12">
+                <h2>Whodunnit</h2>
+                <p>A bit needs to go back in here about who made / makes thing, who is running the project, the service, etc.</p>
+              </div>              
+            </div>
+          </div>
+      </div>
+    </div>
+
+
+
+
+</div>
+
+{% include "map.html" %}
+
+<script>
+jQuery(document).ready(function() {
+    var showmap = function(event) {
+        event ? event.preventDefault() : false;
+        $('body').children().hide("slow");
+        $('#map_container').show("slow");
+    
+        if ( !$('#options').is(':visible') ) {
+            $('#options').fadeIn(2000);
+            setTimeout(function() {
+                $('#options').fadeOut(500);
+            }, 10000);
+        }    
+    }
+    $('#showmap').bind('click',showmap);
+    // TODO: add an onload check for /#map in the url?
+
+    $('#map_container').hide();
+
+});
+</script>
+
+{% endblock %}

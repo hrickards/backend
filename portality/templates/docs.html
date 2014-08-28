@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div id="indexcontent">
+
+    <div class="container" style="padding-bottom:40px;">
+        <div class="content">
+
+        <div class="jumbotron" style="margin-bottom:120px;">
+            <h1>Aaarg, the docs for the APIiiiiiii <br>
+            <small>which is at <a href="/api">http://oabutton.cottagelabs.com/api</a></small> <br>
+            <small>(but will only accept connections on https once live :)</small></h1>
+        </div>
+
+          <div class="row" style="background-color:white;margin-bottom:50px;border-bottom:1px solid red;">
+            <div class="col-md-12">
+                <h1>/register</h1>
+                <p>PUBLIC - no authentication required.</p>
+                <p>POST (ideally JSON) requests to register a user account here (or GET with suitable parameters).</p>
+                <p>REQUIRES email (which will also become username if one is not supplied)</p>
+                <p>EXPECTS profession</p>
+                <p>ACCEPTS username, name, password (actually, accepts anything for now whilst testing)</p>
+                <p>RESPONDS with 200 and a JSON object with the username and api_key</p>
+                <p>ERRORS with 400 if the username already exists or required keys missing or other error, and a JSON object with relevant error information</p>
+            </div>
+          </div>
+          
+          <div class="row" style="background-color:white;margin-bottom:50px;border-bottom:1px solid red;">
+            <div class="col-md-12">
+                <h1>/blocked</h1>
+                <p>RESTRICTED - authentication required</p>
+                <p>POST (ideally JSON) a notification whenever a user is blocked from accessing something (or GET with params).</p>
+                <p>REQUIRES api_key, url</p>
+                <p>EXPECTS coords_lat, coords_lng, doi</p>
+                <p>ACCEPTS anything else for now</p>
+                <p>RESPONDS with 200</p>
+                <p>ERRORS with 400 and a JSON object containing the error information</p>
+            </div>
+          </div>
+
+          <div class="row" style="background-color:white;margin-bottom:50px;border-bottom:1px solid red;">
+            <div class="col-md-12">
+                <h1>/oa_status</h1>
+                <p>RESTRICTED - authentication required</p>
+                <p>POST (ideally JSON) a request for OA status of item at a given URL (or GET with params).</p>
+                <p>REQUIRES api_key, url</p>
+                <p>EXPECTS nothing else</p>
+                <p>ACCEPTS anything else for now</p>
+                <p>RESPONDS with 200 and a JSON object which we will populate with useful stuff depending what functionality we have</p>
+                <p>ERRORS with 400 and a JSON object containing the error information</p>
+            </div>
+          </div>
+<!--
+          <div class="row" style="background-color:white;margin-bottom:50px;border-bottom:1px solid red;">
+            <div class="col-md-12">
+                <h1>/ROUTE</h1>
+                <p>POST .</p>
+                <p>REQUIRES </p>
+                <p>EXPECTS </p>
+                <p>ACCEPTS </p>
+                <p>RESPONDS </p>
+                <p>ERRORS </p>
+            </div>
+          </div>
+-->
+
+        </div>
+    </div>
+
+
+
+
+
+
+
+</div>
+
+{% endblock %}

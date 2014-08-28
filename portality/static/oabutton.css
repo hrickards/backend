@@ -1,0 +1,189 @@
+
+/* oabutton orange is #ef5b23 */
+
+html{
+    padding: 0;
+}
+
+body{
+    padding: 0;
+    background-color: white;
+}
+
+#github_ribbon {
+    display:none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    border: 0;
+    z-index: 100000000;
+}
+
+#indexcontent{
+    background-image: url("/static/bg.jpg");
+    background-repeat:no-repeat;
+    background-size:100%;
+    background-color:white;
+    margin-top:40px;
+    padding-top:40px;
+}
+
+/* MAP STUFF */
+.point{
+  cursor: pointer;
+}
+.country{
+  stroke: #fff;
+  stroke-width: 0.8px;
+  /*cursor:pointer;*/
+}
+.country:hover{
+  stroke: #333;
+  stroke-width: 0.8px;
+}
+.text{
+  font-size:1px;
+  text-transform:capitalize;
+}
+#map {
+  margin:0px;
+  border:none;
+  height:100%;
+  overflow:hidden;
+  background: white;
+}
+.hidden { 
+  display: none; 
+}
+div.tooltip {
+  color: #222; 
+  background: #fff; 
+  padding: .5em; 
+  text-shadow: #f5f5f5 0 1px 0;
+  border-radius: 2px; 
+  box-shadow: 0px 0px 2px 0px #a6a6a6; 
+  opacity: 0.9; 
+  position: absolute;
+}
+#counter{
+    position:absolute;
+    top:10px;
+    right:41%;
+    color:#ef5b23;
+}
+#back{
+    position:absolute;
+    top: 2px;
+    left: 3px;
+}
+#searches{
+    position:absolute;
+    top: 2px;
+    right: 3px;
+    width:40%;
+    z-index:1000;
+}
+#searchbox{
+    background:white;
+    color:#ef5b23;
+}
+#selections{
+    position:absolute;
+    top:42px;
+    right:0;
+    min-width:40%;
+    padding-right:10px;
+    overflow:hidden;
+    z-index:1000;
+}
+#suggestions{
+    position:absolute;
+    top:0;
+    right:0;
+    width:100%;
+    padding-top:80px;
+    padding-right:10px;
+    overflow:hidden;
+    display:none;
+    max-height:98%;
+}
+
+#register_policy_policy_grade_exact{
+    float:right;
+    width:20%;
+    padding:0;
+    margin-right:5px;
+    border-right:1px solid #ccc;
+}
+#register_software_name_exact{
+    float:right;
+    width:9%;
+    padding:0;
+    margin-right:5px;
+    border-right:1px solid #ccc;
+}
+#register_metadata_record_language_exact{
+    float:right;
+    width:3%;
+    padding:0;
+    margin-right:5px;
+    border-right:1px solid #ccc;
+}
+#suggest_operational_content_type{
+    float:right;
+    width:10%;
+    padding:0;
+    margin-right:5px;
+    border-right:1px solid #ccc;
+}
+#register_metadata_record_subject_term_exact{
+    float:right;
+    width:13%;
+    padding:0;
+    margin-right:5px;
+    border-right:1px solid #ccc;
+}
+
+#suggest_story{
+    float:right;
+    width:39%;
+    padding:0;
+}
+.suggestion{
+    font-size: 1em;
+    padding: 2px;
+    margin:0;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    display:block;
+    color: #ef5b23;
+}
+.suggestion:hover{
+    background:white;
+}
+#selections{
+}
+#storypanel{
+    position:absolute;
+    top:80px;
+    right:10%;
+    width:30%;
+}
+#options{
+    position:absolute;
+    top:80px;
+    right:10%;
+    width:30%;
+}
+#graphs{
+    position:absolute;
+    bottom:0;
+    left:0;
+    width:100%;
+    height:20px;
+    overflow:hidden;
+    border-top:1px solid #ccc;
+    display:none;
+}
+

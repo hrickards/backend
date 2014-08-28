@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class="container" style="padding-bottom:40px;margin-top:100px;">
+        <div class="content">
+
+              <form method="post" action="">
+                  <p><input type="text" name="username" placeholder="username or email address" class="form-control"></p>
+                  <p><input type="password" name="password" placeholder="********" class="form-control"></p>
+                  <p><input type="submit" value="Login" class="btn btn-primary"></p>
+              </form>
+              {% if app.config['PUBLIC_REGISTER'] %}
+              <p><br>No account yet? <a href="{{url_for('account.register')}}">Sign up now &raquo;</a></p>
+              {% endif %}
+
+        </div>
+    </div>
+
+{% endblock %}
+
