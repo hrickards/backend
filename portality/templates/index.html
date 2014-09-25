@@ -1,151 +1,619 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
 
-{% block content %}
+<head>
+    <meta charset="utf-8">
+    <title>{{ app.config['SERVICE_NAME'] }}</title>
+    <meta name="description" content="{{ app.config['SERVICE_TAGLINE'] }}">
+    <meta name="author" content="{{ app.config['ADMIN_NAME'] }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-<div id="indexcontent">
+    <link href="{{ url_for('static', filename='favicon.ico')}}" rel="icon" type="image/x-icon" />
 
-    <div class="container" style="padding-bottom:40px;">
-        <div class="content">
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" href="{{url_for('static', filename='vendor/bootstrap-3.0.3/css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='vendor/jquery-ui-1.10.3.custom/css/ui-lightness/jquery-ui-1.10.3.custom.min.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='oabutton.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='vendor/select2-release-3.2/select2.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='vendor/select2-release-3.2/select2-bootstrap.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename='nvd3/nv.d3.css')}}">
     
-          <div class="row">
-            <div class="col-md-6">
-              <div class="jumbotron" style="background-color:#ef5b23;min-height:400px;">
-                <img src="/static/header_needaccess.png">
-                <h2 style="padding-top:17px;color:white;">Tearing down barriers to research, one click at a time</h2>
-              </div>
-            </div>
+    <script type="text/javascript" src="{{url_for('static', filename='vendor/jquery-1.10.2.min.js')}}"></script>    
+    <script type="text/javascript" src="{{url_for('static', filename='vendor/jquery-ui-1.10.3.custom/js/jquery-ui-1.10.3.custom.min.js')}}"></script>    
+    <script type="text/javascript" src="{{url_for('static', filename='vendor/bootstrap-3.0.3/js/bootstrap.min.js')}}"></script>                
+    <script type="text/javascript" src="{{url_for('static', filename='jquery.linkify-1.0-min.js')}}"></script>      
+    <script type="text/javascript" src="{{url_for('static', filename='vendor/select2-release-3.2/select2.min.js')}}"></script>    
+    <script type="text/javascript" src="{{url_for('static', filename='jquery.graphview.js')}}"></script>    
+    <script type="text/javascript" src="{{url_for('static', filename='vendor/d3/d3.v3.min.js')}}"></script>    
+    <script type="text/javascript" src="{{url_for('static', filename='vendor/d3/topojson.v1.min.js')}}"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='nvd3/fisheye.js')}}"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='nvd3/nv.d3.js')}}"></script>
     
-            <div class="col-md-1">
-            </div>
-            
-            <div class="col-md-5">
-              <div class="well" style="min-height:400px;">
-    
-                <p><input id="id_name" name="name" placeholder="Name (required, preferably full name)" type="text" class="form-control"></p>
-                <p><input id="id_email" name="email" placeholder="Email address (required)" type="text" class="form-control"></p>
-                <p><select id="id_profession" name="profession" class="form-control">
-                    <option value="Student">Student</option>
-                    <option value="Doctor">Doctor</option>
-                    <option value="Patient">Patient</option>
-                    <option value="Advocate">Advocate</option>
-                    <option value="Academic">Academic</option>
-                    <option value="Researcher">Researcher</option>
-                    <option value="Librarian">Librarian</option>
-                    <option value="Other">Other</option>
-                    <option value="Undisclosed">Prefer not to say</option>
-                </select></p>
-                <div class="checkbox"><input id="id_confirm_public" name="confirm_public" type="checkbox" />
-                <label for="id_confirm_public" class="confirm-label">I understand that information obtained by this button will be publicly accessible</label>
-                </div>
-                <div class="checkbox"><input checked="checked" id="id_mailinglist" name="mailinglist" type="checkbox" />
-                <label for="id_mailinglist" class="mailinglist-label">I would like to be added to the Open Access Button Mailing List</label>
-                </div>
-                <p>Your e-mail address <u>will not</u> be publicised or shared with third parties.</p>
-                <p><button type="submit" class="btn btn-lg btn-primary btn-block">Get your personal Open Access Button</button></p>
-              </div>
-            </div>
-          </div>
-    
-          <div class="row">
-            <div class="col-md-12">
-                <p>Sign up to get the Open Access Button, a safe, easy to use browser bookmarklet that 
-                you can use to show the global effects of research paywalls - and to help get access to the 
-                research you need. Every time you hit a paywall blocking your research, click the button. 
-                Fill out a short form, add your experience to the map along with thousands of others. 
-                Then use our tools to search for access to papers, and spread the word with social media. 
-                Every person who uses the Open Access Button brings us closer to changing the system.</p>
-                
-                <p>This bit will be updated to explain why people should use the button - new features etc.
-                Maybe add that video in here, or a new one.</p>
-            </div>
-          </div>
-    
-        </div>
+    <link href='http://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
+
+</head>
+
+
+
+
+<body>
+
+<div class="navbar navbar-fixed-top" style="background-color:white;">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="glyphicon glyphicon-list"></span>
+      </button>
+      <a class="navbar-brand" href="/" style="padding-right:50px;">{{ app.config['SERVICE_NAME'] }}</a>
     </div>
-
-
-
-
-
-    <div style="padding-top:40px;padding-bottom:40px;background-color:#ffd;">
-      <div class="container">
-          <div class="content">
-            <div class="row">
-              <div class="col-md-6">
-                <h2>What is this about?</h2>
-                <p>People are denied access to research hidden behind paywalls every day. This problem is invisible, but it slows innovation, kills curiosity and harms patients. This is an indictment of the current system.
-                <a href="http://www.youtube.com/watch?v=L5rVH1KGBCY">Open Access </a>has given us the solution to this problem by allowing everyone to read and re-use research. 
-                We created the 
-                <i>Open Access Button </i>to track the impact of paywalls and help you get access to the research you need. By using the button you’ll help show the impact of this problem, drive awareness of the issue, and help change the system. Furthermore, the 
-                <i>Open Access Button </i>has several ways of helping you get access to the research you need right now. </p>    
-              </div>
-              
-              <div class="col-md-6">
-                <h2>Get involved</h2>
-                <p>This project was made possible by developers, advocates, students and general clever folk from Open community 
-                and we need continued support to take this to the next level. Of course, the code, text, and data we’ve pulled 
-                together are openly available, so you can innovate and advocate with it. If you can, donate to the project to 
-                help us support and maintain service as well as helping us with our future development plans. Bottom line, we’d 
-                love to hear from you, so whether it’s a suggestion, virtual pat on the back, or, dare I say a bug you’ve noticed, 
-                get in touch.</p>
-    
-                <a href="https://www.charitycheckout.co.uk/1111824/OpenAccessButton">
-                <button type="button" class="btn btn-warning donate">Donate!</button></a>
-    
-                <a href="mailto:oabutton+suggestion@gmail.com">
-                <button type="button" class="btn btn-success suggest">Suggestions</button></a>
-    
-                <a href="mailto:oabutton+bugs@gmail.com?subject=OAButton Bug Report">
-                <button type="button" class="btn btn-default bug">Report a bug</button></a>            
-              </div>
-            </div>
-          </div>
-      </div>
+    <div class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li{% if request.path == "/#about" %} class="active"{% endif %} class="active"><a href="/#about">ABOUT</a></li>
+        <li><a href="/#search">DOWNLOAD</a></li>
+        <li><a href="/#suggest">PARTICIPATE</a></li>
+        <li><a href="/#statistics">CONTACT</a></li>
+        <li><a href="/#map">(SOCIAL MEDIA)</a></li>
+      </ul>
     </div>
-
-
-
-
-    <div style="padding-top:40px;padding-bottom:40px;">
-      <div class="container">
-          <div class="content">
-            <div class="row">
-              <div class="col-md-12">
-                <h2>Whodunnit</h2>
-                <p>A bit needs to go back in here about who made / makes thing, who is running the project, the service, etc.</p>
-              </div>              
-            </div>
-          </div>
-      </div>
-    </div>
-
-
-
-
+  </div>
 </div>
 
-{% include "map.html" %}
+{% with messages = get_flashed_messages(with_categories=True) %}
+{% if messages %}
+{% for category, message in messages %}
+<div class="alert alert-{{category}} fade in" data-alert="alert" style="position:fixed;top:50px;left:0px;width:100%;z-index:1001;padding:0;">
+    <div class="container" style="padding-top:5px;padding-bottom:5px;">
+        <a class="close" data-dismiss="alert" href="#" style="font-size:1.4em;">&times;</a>
+        {{ message }}
+    </div>
+</div>
+{% endfor %}
+{% endif %}
+{% endwith %}
+
+
+
+<div id="mapspace"></div>
+
+
+<a name="whatif"> </a>
+<div id="whatif" style="border-top:1px solid #ddd;padding-top:40px;padding-bottom:60px;z-index:1000;position:relative;margin-bottom:2000px;">
+    <div class="container">    
+        <div class="row">
+            <div class="col-md-12">
+                <div class="jumbotron">
+                    <h1>What if we could work together in helping to break down the barriers to paywalls?</h1>
+                </div>
+            </div>
+        </div>
+        </div>
+</div>
+
+
+
+<a name="about"> </a>
+<div style="border-top:1px solid #ddd;padding-top:40px;padding-bottom:60px;z-index:1000;position:relative;background-color:#29cae6;">
+    <div class="container">    
+        <h1>HOW THE BUTTON WORKS</h1>
+        <div class="row">
+            <div class="col-md-4">
+                <p>Push the button foawifj woi fowihf woiehf woih fowieh fowieh ofih oiwhe oihf
+                foihw eoihoihe foqinvoihfowhf woih foieh foqihe foihe foih woie foh qoie foih oqihf]
+                oihef oqih oih qowin fowieff woie  foiw efoihf foih fwoiof oie owih owieh fwfoih .</p>
+            </div>
+            <div class="col-md-4">
+                <p>Get access foawifj woi fowihf woiehf woih fowieh fowieh ofih oiwhe oihf
+                foihw eoihoihe foqinvoihfowhf woih foieh foqihe foihe foih woie foh qoie foih oqihf]
+                oihef oqih oih qowin fowieff woie  foiw efoihf foih fwoiof oie owih owieh fwfoih .</p>
+            </div>
+            <div class="col-md-4">
+                <p>Make progress foawifj woi fowihf woiehf woih fowieh fowieh ofih oiwhe oihf
+                foihw eoihoihe foqinvoihfowhf woih foieh foqihe foihe foih woie foh qoie foih oqihf]
+                oihef oqih oih qowin fowieff woie  foiw efoihf foih fwoiof oie owih owieh fwfoih .</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<a name="search"> </a>
+<div id="searchstrap" style="padding-top:25px;padding-bottom:1000px;position:relative;z-index:1000;">
+    <div class="container">
+        <div id="searchresults"></div>
+    </div>
+</div>
+
+
+
+
+
+
+
+<a name="participate"> </a>
+<div style="padding-top:20px;padding-bottom:60px;z-index:1000;position:relative;background-color:#212f3f">
+    <div class="container">
+        <h1>PARTICIPATE</h1>
+        <div class="row">
+            <div class="col-md-4">
+                <p style="color:white;">Various resources foawifj woi fowihf woiehf woih fowieh fowieh ofih oiwhe oihf
+                foihw eoihoihe foqinvoihfowhf woih foieh foqihe foihe foih woie foh qoie foih oqihf]
+                oihef oqih oih qowin fowieff woie  foiw efoihf foih fwoiof oie owih owieh fwfoih .</p>
+            </div>
+            <div class="col-md-4">
+                <p style="color:white;">User account foawifj woi fowihf woiehf woih fowieh fowieh ofih oiwhe oihf
+                foihw eoihoihe foqinvoihfowhf woih foieh foqihe foihe foih woie foh qoie foih oqihf]
+                oihef oqih oih qowin fowieff woie  foiw efoihf foih fwoiof oie owih owieh fwfoih .</p>
+            </div>
+            <div class="col-md-4">
+                <p style="color:white;">API ACCESS foawifj woi fowihf woiehf woih fowieh fowieh ofih oiwhe oihf
+                foihw eoihoihe foqinvoihfowhf woih foieh foqihe foihe foih woie foh qoie foih oqihf]
+                oihef oqih oih qowin fowieff woie  foiw efoihf foih fwoiof oie owih owieh fwfoih .</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+
+
 
 <script>
 jQuery(document).ready(function() {
-    var showmap = function(event) {
-        event ? event.preventDefault() : false;
-        $('body').children().hide("slow");
-        $('#map_container').show("slow");
-    
-        if ( !$('#options').is(':visible') ) {
-            $('#options').fadeIn(2000);
-            setTimeout(function() {
-                $('#options').fadeOut(500);
-            }, 10000);
-        }    
+
+    function discoveryRecordView(record) {
+        var result = '<tr><td>';
+
+        // configure how long the truncated description strings will be
+        var DESC_LEN = 150
+        
+        // get all of the bits out of the object that we want to display
+        var metadata = record.register.metadata[0]
+        if (!metadata) {
+            metadata = {}
+        }
+        
+        var repo_name = metadata.record.name
+        var repo_url = metadata.record.url
+        var repo_desc = metadata.record.description
+        var repo_langs = metadata.record.language ? metadata.record.language.join(", ") : ""
+        var repo_content_types = metadata.record.content_type ? metadata.record.content_type.join(", ") : ""
+        var repo_type = metadata.record.repository_type ? metadata.record.repository_type.join(", ") : ""
+        var repo_country = metadata.record.country ? metadata.record.country : ""
+        
+        var operational_status = record.register.operational_status
+        var software = record.register.software ? record.register.software[0].name : ""
+        
+        var apis = []
+        if (record.register.api) {
+            for (var i = 0; i < record.register.api.length; i++) {
+                apis.push(record.register.api[i].api_type)
+            }
+        }
+        apis = apis.join(", ")
+        
+        var orgs = []
+        if (record.register.organisation) {
+            for (var i = 0; i < record.register.organisation.length; i++) {
+                var orgn = record.register.organisation[i].details.name
+                orgs.push('<a target="_blank" href="/organisation/' + orgn + '">' + orgn + '</a>')
+            }
+        }
+        orgs = orgs.join(", ")
+        
+        var policies = []
+        if (record.register.policy) {
+            for (var i = 0; i < record.register.policy.length; i++) {
+                policies.push(record.register.policy[i].policy_type)
+            }
+        }
+        policies = policies.join(", ")
+
+        var subjects = []
+        if (metadata.record.subject) {
+            for (var i = 0; i < metadata.record.subject.length; i++) {
+                var term = metadata.record.subject[i].term
+                subjects.push(term)
+            }
+        }
+        subjects = subjects.join(", ")
+
+        result += "<strong><a target='_blank' href='/repository/" + record.id + "'>" + repo_name + "</a></strong><br>"
+        result += "<a target='_blank' href='" + repo_url + "'>" + repo_url + "</a> (" + operational_status + ")<br>"
+        result += "Hosted by <em>" + orgs + "</em> based on <em>" + software + "</em><br>"
+        result += repo_type + " | " + repo_country + " | " + repo_langs + " | " + repo_content_types + "<br>"
+
+        descblock = "<div class='row-fluid'><div class='span12'><div style='padding: 10px'>" + repo_desc.substring(0, DESC_LEN)
+        if (repo_desc.length > DESC_LEN) {
+            descblock += "<span id='" + record.id + "_short' class='short_desc'>...(<a href='#' class='more_desc' data-id='" + record.id + "'>more</a>)</span>"
+            descblock += "<span id='" + record.id + "_long' class='long_desc'>" + repo_desc.substring(DESC_LEN) + " (<a href='#' class='less_desc' data-id='" + record.id + "'>less</a>)</span>"
+        }
+        descblock += "</div></div></div>"
+        result += descblock
+
+        if (policies) {
+            result += "Policies Defined: " + policies + "<br>"
+        }
+        if (apis) {
+            result += "APIs Supported: " + apis + "<br>"
+        }
+        if (subjects) {
+            result += "Subjects: " + subjects
+        }
+        
+        result += '</td></tr>';
+        return result;
     }
-    $('#showmap').bind('click',showmap);
-    // TODO: add an onload check for /#map in the url?
 
-    $('#map_container').hide();
+    function postSearch() {
+        $(".long_desc").hide()
+        $(".more_desc").click(function(event) {
+            event.preventDefault()
+            var rid = $(this).attr("data-id")
+            $('#' + rid + '_short').hide()
+            $('#' + rid + '_long').show()
+        })
+        $(".less_desc").click(function(event) {
+            event.preventDefault()
+            var rid = $(this).attr("data-id")
+            $('#' + rid + '_long').hide()
+            $('#' + rid + '_short').show()
+        })
+    }
+        
+    var cshowresults = function(data) {
+        var restable = '<table id="searchresulttable" class="table table-striped table-bordered" style="background:white;">';
+        for ( var r in data.hits.hits ) {
+            restable += discoveryRecordView(data.hits.hits[r]._source);
+        }
+        restable += '</table>';
+        $('.graphview_panel').html(restable);
+        $('.graphview_total').html(data.hits.total);
+        mapquery($.fn.graphview.options.query());
+    }
 
-});
+    var cuitemplate = function() {
+        var options = $.fn.graphview.options;
+        var ui = '<div class="graphview">';
+        ui += '<div class="row graphview_searcharea">';
+        ui += '<div class="col-md-3" style="padding-top:15px;padding-bottom:20px;">';
+        ui += '<h1>EXPLORE</h1>';
+        ui += '<select class="graphview_suggest searchcontrols" style="border:none;background:none;color:#666;">';
+        ui += '<option style="color:' + options.fill("records") + ';" data-value="records">suggest:</option>';
+        for ( var key in options.defaultquery.facets ) {
+            var obj = options.defaultquery.facets[key];
+            if ( key != "range" && obj.term.suggest ) { // TODO: change this in case it is not a term facet?
+                ui += '<option data-value="' + obj.term.field + '" style="color:' + options.fill(obj.term.field) + ';">suggest ' + key + '</option>';
+                ui += ', ';
+            }
+        }
+        ui += '</select>';
+        ui += '</div>';
+
+        ui += '<div class="col-md-9">';
+
+        ui += '<div style="height:35px;">';
+
+        ui += '<div style="display:inline;"><span class="searchcontrols">';
+        ui += '<input class="form-control graphview_from" type="text" value="';
+        ui += options.defaultquery.from;
+        ui += '" style="width:40px;margin:-5px 0 0 0;padding:1px 1px 0 0;color:#666;text-align:center;display:inline;">';
+        ui += ' to ';
+        ui += '<input class="form-control graphview_to" type="text" value="';
+        ui += options.defaultquery.size;
+        ui += '" style="width:40px;margin:-5px 0 0 0;padding:1px 1px 0 0;color:#666;text-align:center;display:inline;"> of </span> \
+            <span class="graphview_total searchcontrols" style="font-size:16px;font-weight:bold;color:#999;"></span></div>';
+        
+        ui += '<div class="searchcontrols" style="float:right;display:inline;">';
+        ui += ' <a class="close" href="/" style="font-size:1.4em;padding-left:20px;" alt="close the search" title="close the search">&times;</a>';
+        ui += '</div>';
+
+        ui += '</div>';
+
+        ui += '<div><input type="text" class="form-control query_string" style="width:97%;" data-option="query.bool.must.query_string.query"></div>';
+
+        ui += '</div>';
+        ui += '</div>'; // closes searcharea
+
+        ui += '<div class="graphview_panel searchcontrols"></div>';
+
+        ui += '</div>'; // closes graphview
+
+        return ui;
+    }
+
+    $('#searchresults').graphview({
+        "target": "/query",
+        "pushstate": false,
+        "titlefield": "name.exact",
+        "defaultquery": {
+            "query": {
+                "bool": {
+                    "must":[
+                    ]
+                }
+            },
+            "from":0,
+            "size":25,
+            "facets":{
+                "Operational status": {"term":{"field":"register.operational_status.exact","suggest":true}},
+                "Country": {"term":{"field":"register.metadata.record.country.exact","suggest":true}},
+                "Continent": {"term":{"field":"register.metadata.record.continent.exact","suggest":true}},
+                "Content language": {"term":{"field":"register.metadata.record.language.exact","suggest":true}},
+                "Content type": {"term":{"field":"register.metadata.record.content_type.exact","suggest":true}},
+                "Repository type": {"term":{"field":"register.metadata.record.repository_type.exact","suggest":true}},
+                //"Certification": {"term":{"field":"register.metadata.record.certification.exact","suggest":true}},
+                "Subject": {"term":{"field":"register.metadata.record.subject.term.exact","suggest":true}},
+                "Host organisation": {"term":{"field":"register.organisation.details.name.exact","suggest":true}},
+                "Software": {"term":{"field":"register.software.name.exact","suggest":true}},
+                "Supported APIs": {"term":{"field":"register.api.api_type.exact","suggest":true}},
+                //"Integration with type": {"term":{"field":"register.integration.integrated_with.exact","suggest":true,"node":true}},
+                //"Integrated with software": {"term":{"field":"register.integration.software.exact","suggest":true,"node":true}},
+                //"Policy grades": {"term":{"field":"register.policy.policy_grade.exact","suggest":true}},
+                "Policy types": {"term":{"field":"register.policy.policy_type.exact","suggest":true}},
+                "Policy terms": {"term":{"field":"register.policy.terms.exact","suggest":true}}
+            }
+        },
+        showresults: cshowresults,
+        uitemplate: cuitemplate,
+        searchonload: false
+    });
+    
+    window.scrollTo(0,0);
+    $('.searchcontrols').hide();
+    setTimeout(function() {$('#whatif').hide('slow');}, 3000);
+    $('.select2-input').bind('focus',function() {$('.searchcontrols').show('slow');});
+
+
+
+
+
+    // stuff for the map
+    mapresponse = undefined;
+    var updatemap = function(data) {
+        mapresponse = data;
+        $('.point').remove();
+        draw(topo);
+    }
+
+    var defaultmapquery = {"query": {"match_all": {} } }    
+    var mapquery = function(qry) {
+        // get the query from the search query but change the size to max and specify required fields
+        qry.size = 1000,
+        qry.fields = [
+            "coords.lat",
+            "coords.lng",
+            "title",
+            "id"
+        ]
+        qry.facets = {};
+        $.ajax({
+            type: 'GET',
+            url: '/query?source=' + JSON.stringify(qry),
+            dataType: 'JSONP',
+            success: updatemap
+        });
+    }
+    mapquery(defaultmapquery);
+    
+    d3.select(window).on("resize", throttle);
+    
+    var zoom = d3.behavior.zoom()
+        .scaleExtent([1, 800])
+        .on("zoom", move);
+    
+    
+    var width = document.getElementById('mapspace').offsetWidth;
+    var height = $(window).height() - 5;
+    
+    var topo,projection,path,svg,g;
+    
+    var tooltip = d3.select("#mapspace").append("div").attr("class", "tooltip hidden");
+    
+    setup(width,height);
+    
+    function setup(width,height){
+      //projection = d3.geo.orthographic()
+      projection = d3.geo.mercator()
+        .translate([(width/2), (height/2)+150])
+        .scale( width / 2 / Math.PI)
+        .center([0, 30 ]);
+    
+      path = d3.geo.path().projection(projection);
+    
+      svg = d3.select("#mapspace").append("svg")
+          .attr("width", width)
+          .attr("height", height)
+          .call(zoom)
+          .on("click", click)
+          .append("g");
+    
+      g = svg.append("g");
+    
+    /*  var λ = d3.scale.linear()
+        .domain([0, width])
+        .range([-180, 180]);
+    
+      var φ = d3.scale.linear()
+        .domain([0, height])
+        .range([90, -90]);
+        
+      svg.on("mousemove", function() {
+          var p = d3.mouse(this);
+          projection.rotate([λ(p[0]), φ(p[1])]);
+          svg.selectAll("path").attr("d", path);
+      });*/
+    
+    }
+    
+    d3.json("/static/vendor/d3/world-topo-min.json", function(error, world) {
+    
+      var countries = topojson.feature(world, world.objects.countries).features;
+    
+      topo = countries;
+      draw(topo);
+    
+    });
+    
+    function draw(topo) {
+    
+    
+      var country = g.selectAll(".country").data(topo);
+    
+      country.enter().insert("path")
+          .attr("class", "country")
+          .attr("d", path)
+          .attr("id", function(d,i) { return d.id; })
+          .attr("title", function(d,i) { return d.properties.name; })
+          .style("fill", '#c8c8c8');
+    
+      //offsets for tooltips
+      var offsetL = document.getElementById('mapspace').offsetLeft+20;
+      var offsetT = document.getElementById('mapspace').offsetTop+10;
+    
+      //tooltips
+      country
+        .on("mousemove", function(d,i) {
+    
+          var mouse = d3.mouse(svg.node()).map( function(d) { return parseInt(d); } );
+    
+          tooltip.classed("hidden", false)
+                 .attr("style", "left:"+(mouse[0]+offsetL)+"px;top:"+(mouse[1]+offsetT)+"px")
+                 .html(d.properties.name);
+    
+          })
+          .on("mouseout",  function(d,i) {
+            tooltip.classed("hidden", true);
+          })
+          .on("click", function(d,i) {
+            if ( ( $('#chosencountry').length && $('#chosencountry').attr('data-value') != d.properties.name ) || !$('#chosencountry').length ) {
+                $('#chosencountry').remove();
+                $('#selections').append('<a href="#" class="btn btn-default chosen" id="chosencountry" data-field="countrymatch" data-value="' + d.properties.name + '"><span class="glyphicon glyphicon-remove"></span> ' + d.properties.name + '</a>');
+                $('#chosencountry').bind('click',unchoose);
+                executequery();
+            }
+          });
+    
+      //add points and repo suggestions
+      if ( mapresponse ) {
+          mapresponse.hits.hits.forEach(function(i){
+              var nm = i.fields["title"];
+              nm == undefined ? nm = "Untitled story" : nm = nm;
+              typeof nm != "string" ? nm = nm[0] : nm = nm;
+              addpoint(
+                i.fields["coords.lng"],
+                i.fields["coords.lat"],
+                nm,
+                i.fields['id']
+              );
+          });
+      }
+    
+    }
+    
+    
+    function redraw() {
+      width = document.getElementById('mapspace').offsetWidth;
+      height = $(window).height() - 5;
+      d3.select('svg').remove();
+      setup(width,height);
+      draw(topo);
+    }
+    
+    
+    function move() {
+    
+      var t = d3.event.translate;
+      var s = d3.event.scale; 
+      zscale = s;
+      var h = height/4;
+    
+    
+      t[0] = Math.min(
+        (width/height)  * (s - 1), 
+        Math.max( width * (1 - s), t[0] )
+      );
+    
+      t[1] = Math.min(
+        h * (s - 1) + h * s, 
+        Math.max(height  * (1 - s) - h * s, t[1])
+      );
+    
+      zoom.translate(t);
+      g.attr("transform", "translate(" + t + ")scale(" + s + ")");
+    
+      //adjust the country hover stroke width and point size based on zoom level
+      d3.selectAll(".country").style("stroke-width", 1 / s);
+      var sz = 1 / (s/2);
+      sz > 1 ? sz = 1 : sz = sz;
+      d3.selectAll(".point").attr("r", sz);
+    
+    }
+    
+    
+    
+    var throttleTimer;
+    function throttle() {
+      window.clearTimeout(throttleTimer);
+        throttleTimer = window.setTimeout(function() {
+          redraw();
+        }, 200);
+    }
+    
+    
+    //geo translation on mouse click in map
+    function click() {
+      var latlon = projection.invert(d3.mouse(this));
+      console.log(latlon);
+    }
+    
+    
+    //function to add points and text to the map (used in plotting capitals)
+    function addpoint(lat,lon,text) {
+    
+      var gpoint = g.append("g").attr("class", "gpoint");
+      var x = projection([lat,lon])[0];
+      var y = projection([lat,lon])[1];
+    
+      gpoint.append("svg:circle")
+            .attr("cx", x)
+            .attr("cy", y)
+            .attr("class","point")
+            .attr("r", 1)
+            .style("fill", '#f04717')
+          .on("click", function(d,i) {
+              window.open('/organisation/' + text)    
+          });
+    
+      //conditional in case a point has no associated text
+      if(text.length>0){
+    
+        /*gpoint.append("text")
+              .attr("x", x+0.5)
+              .attr("y", y+0.5)
+              .attr("class","text")
+              .text(text);*/
+    
+        gpoint.append("svg:title")
+              .text(text);
+      }
+    
+    }
+    // end of stuff for map ////////////////////////////////////////////////////////
+
+
+
+
+})
 </script>
 
-{% endblock %}
+</body>
+</html>
