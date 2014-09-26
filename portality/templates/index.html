@@ -55,10 +55,10 @@
     <div class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li{% if request.path == "/#about" %} class="active"{% endif %} class="active"><a href="/#about">ABOUT</a></li>
-        <li><a href="/#search">DOWNLOAD</a></li>
-        <li><a href="/#suggest">PARTICIPATE</a></li>
-        <li><a href="/#statistics">CONTACT</a></li>
-        <li><a href="/#map">(SOCIAL MEDIA)</a></li>
+        <li><a href="/#download">DOWNLOAD</a></li>
+        <li><a href="/#share">SHARE</a></li>
+        <li><a href="/#contact">CONTACT</a></li>
+        <li><a href="/#social">(SOCIAL MEDIA)</a></li>
       </ul>
     </div>
   </div>
@@ -83,12 +83,12 @@
 
 
 <a name="whatif"> </a>
-<div id="whatif" style="border-top:1px solid #ddd;padding-top:40px;padding-bottom:60px;z-index:1000;position:relative;margin-bottom:2000px;">
+<div id="whatif" style="display:none;padding-top:40px;padding-bottom:60px;z-index:1000;position:relative;margin-bottom:2000px;">
     <div class="container">    
         <div class="row">
             <div class="col-md-12">
-                <div class="jumbotron">
-                    <h1>What if we could work together in helping to break down the barriers to paywalls?</h1>
+                <div id="whatiftext" class="jumbotron">
+                    <h1>What if we could work together, all over the world, in helping to break down the barriers to research?</h1>
                 </div>
             </div>
         </div>
@@ -97,8 +97,34 @@
 
 
 
+
+<a name="download"> </a>
+<div style="padding-top:40px;padding-bottom:20px;z-index:1000;position:relative;background-color:#212f3f;">
+    <div class="container">    
+        <div class="row">
+            <div class="col-md-3">
+                <a href="/#install"><img class="img" src="/static/oabutton_logo_final200.png" style="height:200px;"></a>
+            </div>
+            <div class="col-md-9">
+                <h1 style="color:white;">OPEN ACCESS BUTTON ENABLES YOU TO SHARE THE RESEARCH THAT MATTERS</h1>
+                <p style="color:white;">And it's available on android, chrome, and firefox :)</p>
+                <p><a class="btn" href="/#install" style="background-color:#f04717;color:#212f3f;float:right;">get your oabutton now</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div style="z-index:1000;position:relative;height:150px;">
+</div>
+
+
+
+
 <a name="about"> </a>
-<div style="border-top:1px solid #ddd;padding-top:40px;padding-bottom:60px;z-index:1000;position:relative;background-color:#29cae6;">
+<div style="padding-top:40px;padding-bottom:60px;z-index:1000;position:relative;background-color:#9dfdfd;">
     <div class="container">    
         <h1>HOW THE BUTTON WORKS</h1>
         <div class="row">
@@ -122,7 +148,7 @@
 </div>
 
 
-<a name="search"> </a>
+<a name="share"> </a>
 <div id="searchstrap" style="padding-top:25px;padding-bottom:1000px;position:relative;z-index:1000;">
     <div class="container">
         <div id="searchresults"></div>
@@ -135,13 +161,13 @@
 
 
 
-<a name="participate"> </a>
-<div style="padding-top:20px;padding-bottom:60px;z-index:1000;position:relative;background-color:#212f3f">
+<a name="resources"> </a>
+<div style="padding-top:40px;padding-bottom:60px;z-index:1000;position:relative;background-color:#212f3f">
     <div class="container">
-        <h1>PARTICIPATE</h1>
+        <h1 style="color:white;">RESOURCES</h1>
         <div class="row">
             <div class="col-md-4">
-                <p style="color:white;">Various resources foawifj woi fowihf woiehf woih fowieh fowieh ofih oiwhe oihf
+                <p style="color:white;min-height:400px;">Various resources foawifj woi fowihf woiehf woih fowieh fowieh ofih oiwhe oihf
                 foihw eoihoihe foqinvoihfowhf woih foieh foqihe foihe foih woie foh qoie foih oqihf]
                 oihef oqih oih qowin fowieff woie  foiw efoihf foih fwoiof oie owih owieh fwfoih .</p>
             </div>
@@ -164,109 +190,73 @@
 
 
 
+<a name="contact"> </a>
+<a name="social"> </a>
+<div style="padding-top:40px;padding-bottom:60px;z-index:1000;position:relative;background-color:#f04717;">
+    <div class="container">
+        <h1 style="color:white;">TALK TO US</h1>
+        <div class="row">
+            <div class="col-md-6">
+                <p style="color:white;min-height:200px;">CONTACT DETAILS IN HERE</p>
+            </div>
+            <div class="col-md-6">
+                <p style="color:white;">TWITTER SOCIAL AND SO ON IN HERE - LATEST TWEETS?</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+<div style="z-index:1000;position:relative;height:200px;">
+</div>
+
+
+
+
+<div style="padding-top:80px;padding-bottom:100px;z-index:1000;position:relative;background-color:#212f3f;">
+    <div class="container">
+        <footer>
+            <p style="color:#c8c8c8;">Footer stuff goes in here, whatever is needed. Logos of partners, cc-by statements, that sort of thing.
+            Key contact details, twitter links, whatever.</p>
+        </footer>
+    </div>
+</div>
+
+
+
 
 
 <script>
 jQuery(document).ready(function() {
 
-    function discoveryRecordView(record) {
-        var result = '<tr><td>';
+    function discoveryRecordView(data) {
+        var details = '<tr><td>';
+        details += '<h4><a href="/story/' + data.id + '">' + data.title + '</a></h4>';
+        details += '<p>';
+        if ( data.author ) {
+            details += 'Author(s): ' + data.author;
+        }
+        if ( data.journal ) {
+            details += ' in journal: ' + data.journal;
+        }
+        details += '</p>';
+        details += '<p>On ' + data.accessed + ' <a href="/account/' + data.user_name + '">' + data.user_name;
+        details += '</a> ';
+        if ( data.user_profession && data.user_profession != "Other" ) {
+            details += '(a ' + data.user_profession.toLowerCase() + ') ';
+        }
+        details += 'was unable to access this article';
+        if ( data.story ) {
+            details += ' for the purpose of:<br>' + data.story;
+        }
+        details += '.</p>';
+        details += '<p>' + data.coords.lat + ', ' + data.coords.lng + '</p>';
 
-        // configure how long the truncated description strings will be
-        var DESC_LEN = 150
-        
-        // get all of the bits out of the object that we want to display
-        var metadata = record.register.metadata[0]
-        if (!metadata) {
-            metadata = {}
-        }
-        
-        var repo_name = metadata.record.name
-        var repo_url = metadata.record.url
-        var repo_desc = metadata.record.description
-        var repo_langs = metadata.record.language ? metadata.record.language.join(", ") : ""
-        var repo_content_types = metadata.record.content_type ? metadata.record.content_type.join(", ") : ""
-        var repo_type = metadata.record.repository_type ? metadata.record.repository_type.join(", ") : ""
-        var repo_country = metadata.record.country ? metadata.record.country : ""
-        
-        var operational_status = record.register.operational_status
-        var software = record.register.software ? record.register.software[0].name : ""
-        
-        var apis = []
-        if (record.register.api) {
-            for (var i = 0; i < record.register.api.length; i++) {
-                apis.push(record.register.api[i].api_type)
-            }
-        }
-        apis = apis.join(", ")
-        
-        var orgs = []
-        if (record.register.organisation) {
-            for (var i = 0; i < record.register.organisation.length; i++) {
-                var orgn = record.register.organisation[i].details.name
-                orgs.push('<a target="_blank" href="/organisation/' + orgn + '">' + orgn + '</a>')
-            }
-        }
-        orgs = orgs.join(", ")
-        
-        var policies = []
-        if (record.register.policy) {
-            for (var i = 0; i < record.register.policy.length; i++) {
-                policies.push(record.register.policy[i].policy_type)
-            }
-        }
-        policies = policies.join(", ")
-
-        var subjects = []
-        if (metadata.record.subject) {
-            for (var i = 0; i < metadata.record.subject.length; i++) {
-                var term = metadata.record.subject[i].term
-                subjects.push(term)
-            }
-        }
-        subjects = subjects.join(", ")
-
-        result += "<strong><a target='_blank' href='/repository/" + record.id + "'>" + repo_name + "</a></strong><br>"
-        result += "<a target='_blank' href='" + repo_url + "'>" + repo_url + "</a> (" + operational_status + ")<br>"
-        result += "Hosted by <em>" + orgs + "</em> based on <em>" + software + "</em><br>"
-        result += repo_type + " | " + repo_country + " | " + repo_langs + " | " + repo_content_types + "<br>"
-
-        descblock = "<div class='row-fluid'><div class='span12'><div style='padding: 10px'>" + repo_desc.substring(0, DESC_LEN)
-        if (repo_desc.length > DESC_LEN) {
-            descblock += "<span id='" + record.id + "_short' class='short_desc'>...(<a href='#' class='more_desc' data-id='" + record.id + "'>more</a>)</span>"
-            descblock += "<span id='" + record.id + "_long' class='long_desc'>" + repo_desc.substring(DESC_LEN) + " (<a href='#' class='less_desc' data-id='" + record.id + "'>less</a>)</span>"
-        }
-        descblock += "</div></div></div>"
-        result += descblock
-
-        if (policies) {
-            result += "Policies Defined: " + policies + "<br>"
-        }
-        if (apis) {
-            result += "APIs Supported: " + apis + "<br>"
-        }
-        if (subjects) {
-            result += "Subjects: " + subjects
-        }
-        
-        result += '</td></tr>';
-        return result;
-    }
-
-    function postSearch() {
-        $(".long_desc").hide()
-        $(".more_desc").click(function(event) {
-            event.preventDefault()
-            var rid = $(this).attr("data-id")
-            $('#' + rid + '_short').hide()
-            $('#' + rid + '_long').show()
-        })
-        $(".less_desc").click(function(event) {
-            event.preventDefault()
-            var rid = $(this).attr("data-id")
-            $('#' + rid + '_long').hide()
-            $('#' + rid + '_short').show()
-        })
+        details += '</td></tr>';
+        return details;
     }
         
     var cshowresults = function(data) {
@@ -284,9 +274,16 @@ jQuery(document).ready(function() {
         var options = $.fn.graphview.options;
         var ui = '<div class="graphview">';
         ui += '<div class="row graphview_searcharea">';
+
+        ui += "<p style='color:#212f3f;'>You can use oabutton to report when you can't get access to research, to find alternative sources, ";
+        ui += "and to find more relevant information. And, we can also use that data to illustrate the scale of the issue ";
+        ui += "and to advocate for change. Explore the world's access stories below, then check out our ";
+        ui += '<a href="/#resources">resources</a> and ways to <a href="/#participate">participate</a>.</p>';
+
         ui += '<div class="col-md-3" style="padding-top:15px;padding-bottom:20px;">';
-        ui += '<h1>EXPLORE</h1>';
-        ui += '<select class="graphview_suggest searchcontrols" style="border:none;background:none;color:#666;">';
+        
+        ui += '<h1>STORIES</h1>';
+        ui += '<select class="graphview_suggest searchcontrols" style="border:none;background:none;color:#666;width:200px;">';
         ui += '<option style="color:' + options.fill("records") + ';" data-value="records">suggest:</option>';
         for ( var key in options.defaultquery.facets ) {
             var obj = options.defaultquery.facets[key];
@@ -313,7 +310,7 @@ jQuery(document).ready(function() {
             <span class="graphview_total searchcontrols" style="font-size:16px;font-weight:bold;color:#999;"></span></div>';
         
         ui += '<div class="searchcontrols" style="float:right;display:inline;">';
-        ui += ' <a class="close" href="/" style="font-size:1.4em;padding-left:20px;" alt="close the search" title="close the search">&times;</a>';
+        ui += ' <a id="closesearch" class="close" href="#" style="font-size:1.4em;padding-left:20px;" alt="close the search" title="close the search">&times;</a>';
         ui += '</div>';
 
         ui += '</div>';
@@ -331,35 +328,26 @@ jQuery(document).ready(function() {
     }
 
     $('#searchresults').graphview({
-        "target": "/query",
+        "target": "/query/",
         "pushstate": false,
         "titlefield": "name.exact",
         "defaultquery": {
             "query": {
                 "bool": {
                     "must":[
+                        {"match_all": {}}
                     ]
                 }
             },
             "from":0,
             "size":25,
             "facets":{
-                "Operational status": {"term":{"field":"register.operational_status.exact","suggest":true}},
-                "Country": {"term":{"field":"register.metadata.record.country.exact","suggest":true}},
-                "Continent": {"term":{"field":"register.metadata.record.continent.exact","suggest":true}},
-                "Content language": {"term":{"field":"register.metadata.record.language.exact","suggest":true}},
-                "Content type": {"term":{"field":"register.metadata.record.content_type.exact","suggest":true}},
-                "Repository type": {"term":{"field":"register.metadata.record.repository_type.exact","suggest":true}},
-                //"Certification": {"term":{"field":"register.metadata.record.certification.exact","suggest":true}},
-                "Subject": {"term":{"field":"register.metadata.record.subject.term.exact","suggest":true}},
-                "Host organisation": {"term":{"field":"register.organisation.details.name.exact","suggest":true}},
-                "Software": {"term":{"field":"register.software.name.exact","suggest":true}},
-                "Supported APIs": {"term":{"field":"register.api.api_type.exact","suggest":true}},
-                //"Integration with type": {"term":{"field":"register.integration.integrated_with.exact","suggest":true,"node":true}},
-                //"Integrated with software": {"term":{"field":"register.integration.software.exact","suggest":true,"node":true}},
-                //"Policy grades": {"term":{"field":"register.policy.policy_grade.exact","suggest":true}},
-                "Policy types": {"term":{"field":"register.policy.policy_type.exact","suggest":true}},
-                "Policy terms": {"term":{"field":"register.policy.terms.exact","suggest":true}}
+                "Authors": {"term":{"field":"author.exact","suggest":true}},
+                "Journals": {"term":{"field":"journal.exact","suggest":true}},
+                "DOIs": {"term":{"field":"doi.exact","suggest":true}},
+                "User professions": {"term":{"field":"user_profession.exact","suggest":true}},
+                "Story themes (indev)": {"term":{"field":"description","suggest":true}},
+                "Research keywords (indev)": {"term":{"field":"title","suggest":true}}
             }
         },
         showresults: cshowresults,
@@ -367,13 +355,33 @@ jQuery(document).ready(function() {
         searchonload: false
     });
     
+    $(window).on('beforeunload', function() {
+        $(window).scrollTop(0);
+    });
     window.scrollTo(0,0);
     $('.searchcontrols').hide();
-    setTimeout(function() {$('#whatif').hide('slow');}, 3000);
-    $('.select2-input').bind('focus',function() {$('.searchcontrols').show('slow');});
+    if ( !window.location.hash ) {
+        window.scrollTo(0,0);
+        $('#whatif').show();
+        $(document).scrollTop(0);
+        setTimeout(function() {
+            $('#whatiftext').fadeOut('slow', function() {
+                $('#whatif').hide('slow', function() {
+                    window.scrollBy(0,60);
+                });
+            }); 
+        }, 4500);
+    }
 
+    $('.select2-input').bind('focus',function() {
+        $('.searchcontrols').fadeIn('slow'); 
+    });
 
-
+    var closesearch = function(event) {
+        event.preventDefault();
+        $('.searchcontrols').fadeOut('fast');
+    }
+    $('#closesearch').bind('click',closesearch);
 
 
     // stuff for the map
@@ -397,7 +405,7 @@ jQuery(document).ready(function() {
         qry.facets = {};
         $.ajax({
             type: 'GET',
-            url: '/query?source=' + JSON.stringify(qry),
+            url: '/query/?source=' + JSON.stringify(qry),
             dataType: 'JSONP',
             success: updatemap
         });
