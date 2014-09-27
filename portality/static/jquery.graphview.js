@@ -867,7 +867,7 @@ if (!Array.prototype.indexOf) {
                     };
                                             
                     $.ajax({
-                        type: "POST",
+                        type: options.ajaxtype,
                         url: options.target + '?source=' + JSON.stringify(qry),
                         contentType: "application/json; charset=utf-8",
                         dataType: options.datatype,

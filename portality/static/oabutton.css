@@ -17,11 +17,20 @@ body{
 }
 .navbar-brand{
     font-weight:bold;
+    color:#212f3f;
 }
 .navbar-nav li a{
     font-size:0.8em;
     color:#212f3f;
     font-weight:bold;
+}
+.navbar-nav li a:hover{
+    color:#212f3f;
+    background-color:#f04717;
+}
+.navbar-nav li.active{
+    color:#212f3f;
+    background-color:#9dfdfd;
 }
 .btn{
     font-size:1em;
