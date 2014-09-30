@@ -1,11 +1,17 @@
+/*
+oabutton dark blue (which is the main text colour) is 212f3f
+medium blue is 29cae6
+light blue is 9dfdfd
+orange (the action colour) is f04717
+grey is c8c8c8
+white is ffffff
+*/
+
 html, body{
     margin:0;
     padding:0;
     font-size:1.1em;
     font-family: 'Raleway', sans-serif;
-    color:#212f3f;
-}
-h1, h2, h3, h4, h5, h6{
     color:#212f3f;
 }
 body{
@@ -32,36 +38,81 @@ body{
     color:#212f3f;
     background-color:#9dfdfd;
 }
+.navbar-nav{
+    height:50px;
+}
 .btn{
     font-size:1em;
+}
+.btn-action{
+     background-color:#f04717;
+     color:#212f3f;
 }
 .jumbotron{
     background-color:#f04717;
 }
+.strap{
+    padding-top:40px;
+    padding-bottom:40px;
+    z-index:1000;
+    position:relative;
+    background-color:#212f3f;
+    min-height:800px;
+}
+.strap p, .strap h1, .strap h2, .strap h3, .strap h4, .strap h5, .strap h6{
+    color:#fff;
+}
+.strap-compact{
+    min-height:10px;
+}
+.strap-action{
+    background-color:#f04717;
+}
+.strap-action a{
+    color:#212f3f;
+}
+.action{
+    color:#f04717;
+}
+.strap-white{
+    background-color:#fff;
+}
+.strap-white p, .strap-white h1, .strap-white h2, .strap-white h3, .strap-white h4, .strap-white h5, .strap-white h6{
+    color:#212f3f;
+}
 
+.bubble{
+    position: relative;
+    width: 100%;
+    padding: 5px;
+    background: #FFFFFF;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    margin-bottom:10px;
+}
+.strap .bubble p{
+    color:#212f3f;
+}
+.bubble:after {
+    content: '';
+    position: absolute;
+    border-style: solid;
+    border-width: 15px 15px 0;
+    border-color: #FFFFFF transparent;
+    display: block;
+    width: 0;
+    z-index: 1;
+    bottom: -15px;
+    left: 51px;
+}
 
 
 
 /* MAP STUFF */
-#mapspace{
-    margin:0px;
-    border:none;
-    padding:0px;
-    overflow:hidden;
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    z-index:1;
-}
-.point{
-  cursor: pointer;
-}
 .country{
   stroke: #fff;
   stroke-width: 0.8px;
-  /*cursor:pointer;*/
 }
 .country:hover{
   stroke: #333;
