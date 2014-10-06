@@ -184,12 +184,16 @@ def status():
         result = {}
         # find out the block count for this url and anything else we already know about it
         result['blocked'] = models.Blocked.count(url)
+        result['wishlist'] = models.Wishlist.count(url)
         
         # quickscrape the url via contentmine, unless it is already in contentmine
-        #cm = _contentmine(url)
+        cm = _contentmine(url)
+        result['contentmine'] = cm
                 
-        # look for further information if not already known, by calling the core processor        
-        #cr = _core(url)
+        # look for further information if not already known, by calling the core processor
+        if 'title' in cm.get('metadata',{}):
+            qv = " AND ".join([ i for i in cm['metadata']['title'].split(' ') ] if i not in ['and','or','in','of','the'])
+            result['core'] = _core(qv)
         
         # academia.edu, researchgate, mendeley?        
         # look via other processors if available, and if further info may still be useful
@@ -199,8 +203,7 @@ def status():
         # doaj - can query for journal article by doi or url and get back the article metadata including fulltext link
         # crossref - get some metadata?
         
-        # TODO: combine up all the information found and save it somewhere. then return something to the request
-        #result['cr'] = cr
+        # TODO: save what gets found somewhere
         
         resp = make_response(json.dumps(result))
         resp.mimetype = "application/json"
@@ -256,7 +259,6 @@ def _core(value):
     try:
         data = response.json()
         result = {}
-        result['data'] = data
         if 'ListRecords' in data and len(data['ListRecords']) != 0:
             record = data['ListRecords'][0]['record']['metadata']['oai_dc:dc']
             result['record'] = record
@@ -271,16 +273,14 @@ def _core(value):
 def _contentmine(value):
     # check to see if it is in contentmine
     url = app.config['PROCESSORS']['contentmine']['url'].rstrip('/') + '/'
-    api_key = app.config['PROCESSORS']['contentmine']['api_key']
+    api_key = app.config['PROCESSORS']['contentmine'].get('api_key','')
     addr = url + value
-    addr += "?api_key=" + api_key
+    if api_key: addr += "?api_key=" + api_key
     response = requests.get(addr)
     # if not get contentmine to quickscrape it
     # then return the metadata about it
     try:
-        data = response.json()
-        result = {}
-        return result
+        return response.json()
     except:
         return {}
 

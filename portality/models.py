@@ -62,6 +62,11 @@ class Account(DomainObject, UserMixin):
 class Wishlist(DomainObject):
     __type__ = 'wishlist'
 
+    @classmethod
+    def count(cls, url=''):
+        res = cls.query( terms={"url.exact":url} )
+        return res['hits']['total']
+
 
 # a typical record object, with no special abilities
 class Blocked(DomainObject):
