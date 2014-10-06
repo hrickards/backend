@@ -58,6 +58,9 @@ MAPPINGS = {
     }
 }
 MAPPINGS['account'] = {'account':MAPPINGS['record']['record']}
+MAPPINGS['blocked'] = {'blocked':MAPPINGS['record']['record']}
+MAPPINGS['wishlist'] = {'wishlist':MAPPINGS['record']['record']}
+MAPPINGS['pages'] = {'pages':MAPPINGS['record']['record']}
 
 
 # ========================
@@ -82,3 +85,86 @@ DEFAULT_SORT = {
 }
 
 
+# ========================
+# PROCESSOR SETTINGS
+PROCESSORS = {
+    "core": {
+        "url": "http://core.kmi.open.ac.uk/api/search/",
+        "api_key": "my4PC1OC6J6thk0Y1G8cOa20xJZrMcqs"
+    }
+}
+
+
+# ========================
+# MEDIA SETTINGS
+
+# location of media storage folder
+MEDIA_FOLDER = "media"
+
+
+# ========================
+# PAGEMANAGER SETTINGS
+
+# folder name for storing page content
+# will be added under the templates/pagemanager route
+CONTENT_FOLDER = "content"
+
+# etherpad endpoint if available for collaborative editing
+COLLABORATIVE = 'http://pads.cottagelabs.com'
+
+# when a page is deleted from the index should it also be removed from 
+# filesystem and etherpad (if they are available in the first place)
+DELETE_REMOVES_FS = False # True / False
+DELETE_REMOVES_EP = False # MUST BE THE ETHERPAD API-KEY OR DELETES WILL FAIL
+
+# disqus account shortname if available for page comments
+COMMENTS = ''
+
+
+'''
+    "searchables" : {
+        "Google" : "http://www.google.com/search?q=",
+        "Google scholar" : "http://scholar.google.com/scholar?q=",
+        "Google video" : "http://www.google.com/search?tbm=vid&q=",
+        "Google blogs" : "http://www.google.com/search?tbm=blg&q=",
+        "Google books" : "http://www.google.com/search?tbm=bks&q=",
+        "Google images" : "http://www.google.com/search?tbm=isch&q=",
+        "Google search ResearcherID" : "http://www.google.com/search?q=XXXX+site%3Awww.researcherid.com",
+        "Google search ACM Author Profiles" : "http://www.google.com/search?q=XXXX+ACM+author+profile+site%3Adl.acm.org",
+        "Google search Mathemtatics Genealogy" : "http://www.google.com/search?q=XXXX+site%3Agenealogy.math.ndsu.nodak.edu",
+        "Microsoft academic search" : "http://academic.research.microsoft.com/Search?query=",
+        "Zentralblatt Math" : "http://www.zentralblatt-math.org/zmath/en/search/?q=",
+        "Zentralblatt Math authors" : "http://www.zentralblatt-math.org/zmath/en/authors/?au=",
+        "MathSciNet" : "http://www.ams.org/mathscinet-mref?ref=",
+        "DOI resolver" : "http://dx.doi.org/",
+        "PubMed" : "http://www.ncbi.nlm.nih.gov/pubmed?term=",
+        "PubMed Central" : "http://www.ncbi.nlm.nih.gov/pmc/?term=",
+        "BioMed Central" : "http://www.biomedcentral.com/search/results?terms="
+    }
+
+        var searcher = '<p style="text-align:right">search <select class="span2" id="extsrch_target">'
+        searcher += '<option value="/search?q=">This site</option>'
+        searcher += '<option value="/{{ objectrecord.owner }}/{{ objectrecord.collection }}?q=">The {{ objectrecord.collection }} collection</option>'
+        var searchables = {{ searchables | safe }}
+        for ( var item in searchables ) { searcher += '<option value="' + searchables[item] + '">' + item + '</option>'; }
+        searcher += '</select><br />for <input class="span2" id="extsrch_value" />'
+        jQuery('#searcher').append(searcher)
+        var searchvals = {{ searchvals | safe }}
+        jQuery('#extsrch_value').autocomplete({source:searchvals})
+
+        var dosearch = function(event) {
+            var target = jQuery('#extsrch_target').val()
+            var value = jQuery('#extsrch_value').val()
+            if ( target.match("XXXX") ) {
+                var href = target.replace("XXXX",value)
+            } else {
+                var href = target + value
+            }
+            //window.open(href)
+            window.location = href
+        }
+        var checkenter = function(event) {
+            var keycode = (event.keyCode ? event.keyCode : event.which)
+            if (keycode == '13') { dosearch(event) }
+        }
+'''

@@ -1,5 +1,5 @@
 
-from flask import Flask, request, abort, render_template, make_response
+from flask import Flask, request, abort, render_template, make_response, redirect
 from flask.views import View
 from flask.ext.login import login_user, current_user
 
@@ -11,12 +11,16 @@ from portality.view.query import blueprint as query
 from portality.view.stream import blueprint as stream
 from portality.view.account import blueprint as account
 from portality.view.api import blueprint as api
+from portality.view.media import blueprint as media
+from portality.view.pagemanager import blueprint as pagemanager
 
 
 app.register_blueprint(query, url_prefix='/query')
 app.register_blueprint(stream, url_prefix='/stream')
 app.register_blueprint(account, url_prefix='/account')
 app.register_blueprint(api, url_prefix='/api')
+app.register_blueprint(media, url_prefix='/media')
+app.register_blueprint(pagemanager)
 
 
 @login_manager.user_loader
@@ -33,13 +37,17 @@ def set_current_context():
 def standard_authentication():
     """Check remote_user on a per-request basis."""
     remote_user = request.headers.get('REMOTE_USER', '')
+    if request.json:
+        vals = request.json
+    else:
+        vals = request.values
     if remote_user:
         user = models.Account.pull(remote_user)
         if user is not None:
             login_user(user, remember=False)
     # add a check for provision of api key
-    elif 'api_key' in request.values:
-        res = models.Account.query(q='api_key:"' + request.values['api_key'] + '"')['hits']['hits']
+    elif 'api_key' in vals:
+        res = models.Account.query(q='api_key:"' + vals['api_key'] + '"')['hits']['hits']
         if len(res) == 1:
             user = models.Account.pull(res[0]['_source']['id'])
             if user is not None:
@@ -60,10 +68,21 @@ def index():
     return render_template("index.html")
 
 
+@app.route("/download")
+def dlredir():
+    return redirect('/#download')
+
+
 @app.route("/docs")
 def docs():
     return render_template("docs.html")
-    
+
+
+@app.route("/bookmarklet")
+def bookmarklet():
+    return render_template("bookmarklet.html")
+
+
 
 # TODO: an incomplete start at a possible place to display stories
 # this will actually probably be implemented first in the API

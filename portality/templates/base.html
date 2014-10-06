@@ -63,7 +63,7 @@
         {% if current_user.is_anonymous() %}
         <li><a href="{{url_for('account.login')}}">Login</a></li>
         {% else %}
-        <li class="dropdown">
+        <li class="dropdown" style="background-color:#f04717;color:#212f3f;">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" style="color:black;"><span class="glyphicon glyphicon-cog"></span> <b class="caret"></b></a>
           <ul class="dropdown-menu" style="background-color:#eee;">
             <li><a href="{{ url_for('account.index') }}{{current_user.id}}">Your account</a></li>
@@ -79,10 +79,12 @@
         </li>
         {% endif %}
 
+        {% if current_user.is_anonymous() %}
         <li style="background-color:#f04717;color:#212f3f;height:55px;z-index:10000;
         -webkit-border-bottom-right-radius: 5px;-webkit-border-bottom-left-radius: 5px;
         -moz-border-radius-bottomright: 5px;-moz-border-radius-bottomleft: 5px;border-bottom-right-radius: 5px;border-bottom-left-radius: 5px;">
         <a href="/#download" style="font-size:1.2em;font-weight:bold;" id="bfb">Download</a></li>
+        {% endif %}
       </ul>
     </div>
   </div>
@@ -91,7 +93,7 @@
 {% with messages = get_flashed_messages(with_categories=True) %}
 {% if messages %}
 {% for category, message in messages %}
-<div class="alert alert-{{category}} fade in" data-alert="alert" style="position:fixed;top:50px;left:0px;width:100%;z-index:1001;padding:0;">
+<div class="alert alert-{{category}} fade in" data-alert="alert" style="width:100%;z-index:1001;padding:0;">
     <div class="container" style="padding-top:5px;padding-bottom:5px;">
         <a class="close" data-dismiss="alert" href="#" style="font-size:1.4em;">&times;</a>
         {{ message }}
@@ -105,9 +107,7 @@
 
 {% block content %}{% endblock %}
 
-
-
-
+{% if current_user.is_anonymous() and request.path.lstrip('/').split('/')[0] not in ['docs','account'] %}
 <a name="download"> </a>
 <div class="strap strap-white">
     <div class="container">
@@ -135,7 +135,7 @@
                 <label for="id_confirm_public" class="confirm-label">I understand that information obtained by this button will be publicly accessible</label>
                 </div>
                 <div class="checkbox"><input id="id_confirm_terms" name="confirm_terms" type="checkbox" />
-                <label for="id_confirm_terms" class="confirm-label">I agree to the OAButton <a target="_blank" href="/terms">terms and conditions</a></label>
+                <label for="id_confirm_terms" class="confirm-label">I agree to the Open Access Button <a target="_blank" href="/terms">terms and conditions</a></label>
                 </div>
                 <div class="checkbox"><input id="id_mailinglist" name="mailinglist" type="checkbox" />
                 <label for="id_mailinglist" class="mailinglist-label">I would like to be added to the Open Access Button Mailing List</label>
@@ -149,60 +149,35 @@
                 </select></p>
 
                 <p><button type="submit" class="btn btn-lg btn-block btn-action">get your Open Access Button</button></p>
-                <p>Questions? <a href="#contact" class="action">Contact us</a></p>
+                <p>Questions? <a href="/contact" class="action">Contact us</a></p>
             </div>
         </div>
     </div>
 </div>
+{% endif %}
 
-<a name="contact"> </a>
-<div class="strap strap-action strap-compact">
+
+
+<div class="strap strap-compact">
     <div class="container">
         <div class="row">
-            <div class="col-md-4">
-                <h1>CONTACT US</h1>
-                <p>We can be found on <br>
-                <a href="" target="_blank">Twitter</a>, 
-                <a href="" target="_blank">Facebook</a> and 
-                <a href="" target="_blank">Google+</a>.</p>
+            <div class="col-md-2">
+                <p>Footer stuff goes here</p>
+            </div>
+            <div class="col-md-2">
             </div>
             <div class="col-md-4">
+                <p>Logos or something, or whatever, in here.</p>
             </div>
             <div class="col-md-4">
                 <p style="float:right;margin-top:10px;">
-                    <a href="" target="_blank"><i class="fa fa-twitter-square fa-5x" style="color:#212f3f;"></i></a>
-                    <a href="" target="_blank"><i class="fa fa-facebook-square fa-5x" style="color:#212f3f;"></i></a>
-                    <a href="" target="_blank"><i class="fa fa-google-plus-square fa-5x" style="color:#212f3f;"></i></a>
+                    <a href="" target="_blank"><i class="fa fa-twitter-square fa-5x action"></i></a>
+                    <a href="" target="_blank"><i class="fa fa-facebook-square fa-5x action"></i></a>
+                    <a href="" target="_blank"><i class="fa fa-google-plus-square fa-5x action"></i></a>
+                    <br>or <a href="/contact" style="color:#f04717;">contact us directly</a>
                 </p>
             </div>
         </div>
-
-        <div class="row">
-            <div class="col-md-8">
-                <p>For general inquires please contact: Hello [AT] openaccessbutton [DOT] org <br>
-                For funding inquiries please contact: Funding [AT] openaccessbutton [DOT] org <br>
-                For legal inquiries please contact: Legal [AT] openaccessbutton [DOT] org <br>
-                For press inquires please contact: press [AT] openaccessbutton [DOT] org </p>
-                                
-                <p>You can find our press pack here ... eventually</p>                
-            </div>
-            <div class="col-md-4">
-                <p style="float:right;">Medsin<br>
-                Medsin-UK, c/o THET<br>
-                1 Wimpole Street<br>
-                London, England W1E 0AE<br>
-                United Kingdom</p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div style="padding-top:80px;padding-bottom:100px;z-index:1000;position:relative;background-color:#212f3f;">
-    <div class="container">
-        <footer>
-            <p style="color:#c8c8c8;">Footer stuff goes in here, whatever is needed. Logos of partners, cc-by statements, that sort of thing.
-            Key contact details, twitter links, whatever.</p>
-        </footer>
     </div>
 </div>
 
