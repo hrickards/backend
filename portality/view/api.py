@@ -192,10 +192,11 @@ def status():
                 
         # look for further information if not already known, by calling the core processor
         if 'title' in cm.get('metadata',{}):
-            qv = " AND ".join([ i for i in cm['metadata']['title'].split(' ') ] if i not in ['and','or','in','of','the'])
+            #TODO: make a proper ignore list and strip any non-az09 characters
+            qv = " AND ".join([ i for i in cm['metadata']['title'].replace(',','').split(' ') if i not in ['and','or','in','of','the','for']])
             result['core'] = _core(qv)
         
-        # academia.edu, researchgate, mendeley?        
+        # academia.edu, researchgate, mendeley?
         # look via other processors if available, and if further info may still be useful
         # contentmine - put in the text miners I wrote to contentmine API, and can submit any articles for processing if not done already
         # oag - look for the article licensing criteria
@@ -255,6 +256,7 @@ def _core(value):
     api_key = app.config['PROCESSORS']['core']['api_key']
     addr = url + value
     addr += "?format=json&api_key=" + api_key
+    print addr
     response = requests.get(addr)
     try:
         data = response.json()
@@ -274,15 +276,17 @@ def _contentmine(value):
     # check to see if it is in contentmine
     url = app.config['PROCESSORS']['contentmine']['url'].rstrip('/') + '/'
     api_key = app.config['PROCESSORS']['contentmine'].get('api_key','')
-    addr = url + value
-    if api_key: addr += "?api_key=" + api_key
+    addr = url + 'processor/quickscrape?'
+    addr += 'url=' + value + '&'
+    addr += 'scraper=generic_open&'
+    if api_key: addr += "api_key=" + api_key + '&'
     response = requests.get(addr)
     # if not get contentmine to quickscrape it
     # then return the metadata about it
     try:
         return response.json()
-    except:
-        return {}
+    except Exception, e:
+        return {"errors": [str(e)]}
 
 
 

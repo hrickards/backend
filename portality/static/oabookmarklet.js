@@ -14,7 +14,7 @@ jQuery(document).ready(function() {
     $('#oabookmarkletcontainer').animate({'right':'0'},500);
 
     oab = new oabutton({
-        api: 'http://localhost:5004/api',
+        api: 'http://oabutton.cottagelabs.com/api',
         api_key: 'dc7a3ead-9b46-4883-b378-be4f79851f32'
     });
     oab.status({
