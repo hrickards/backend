@@ -9,4 +9,4 @@ dist/*
 app.cfg
 
 media/*
-portality/default_templates/pagemanager/content/*
+portality/templates/pagemanager/content/*

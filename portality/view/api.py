@@ -111,31 +111,45 @@ def retrieve():
 
 
 @blueprint.route('/blocked', methods=['GET','POST'])
+@blueprint.route('/blocked/<bid>', methods=['GET','POST'])
 @util.jsonp
 @login_required
-def blocked():
-    try:
-        if request.json:
-            vals = request.json
-        else:
-            vals = request.values
-        event = models.Blocked()
-        event.data['coords_lat'] = vals.get('coords_lat','')
-        event.data['coords_lng'] = vals.get('coords_lng','')
-        event.data['doi'] = vals.get('doi','')
-        event.data['url'] = vals.get('url','')
-        event.data['user_id'] = current_user.id
-        event.data['user_name'] = current_user.data.get('username','')
-        event.data['user_profession'] = current_user.data.get('profession','')
-        event.save()
-        resp = make_response( json.dumps( {'url':vals.get('url',''), 'id':event.id } ) )
-        resp.mimetype = "application/json"
-        return resp
-    except Exception, e:
-        resp = make_response(json.dumps({'errors': [str(e)]}))
-        resp.mimetype = "application/json"
-        return resp, 400
-        
+def blocked(bid=None):
+    if bid is not None:
+        e = models.Blocked.pull(bid)
+        if request.method == 'GET':
+            resp = make_response( json.dumps( e.data ) )
+            resp.mimetype = "application/json"
+            return resp
+        elif request.method == 'POST':
+            if request.json:
+                vals = request.json
+            else:
+                vals = request.values
+            
+    else:
+        try:
+            if request.json:
+                vals = request.json
+            else:
+                vals = request.values
+            event = models.Blocked()
+            event.data['coords_lat'] = vals.get('coords_lat','')
+            event.data['coords_lng'] = vals.get('coords_lng','')
+            event.data['doi'] = vals.get('doi','')
+            event.data['url'] = vals.get('url','')
+            event.data['user_id'] = current_user.id
+            event.data['user_name'] = current_user.data.get('username','')
+            event.data['user_profession'] = current_user.data.get('profession','')
+            event.save()
+            resp = make_response( json.dumps( {'url':vals.get('url',''), 'id':event.id } ) )
+            resp.mimetype = "application/json"
+            return resp
+        except Exception, e:
+            resp = make_response(json.dumps({'errors': [str(e)]}))
+            resp.mimetype = "application/json"
+            return resp, 400
+
         
 @blueprint.route('/blocked/wishlist', methods=['GET','POST'])
 @util.jsonp
