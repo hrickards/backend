@@ -48,7 +48,7 @@ oabutton.prototype = {
         this.send('blocked',o);
     },
     wishlist: function(o) {
-        this.send('blocked/wishlist',o);
+        this.send('wishlist',o);
     }
     // TODO: add the processor API route
 }

@@ -155,7 +155,7 @@ ERRORS with 400 and a JSON object containing the error information
         <div class="row" style="padding:0;margin:0;">
             <div class="col-md-12">
                 <h1>BLOCKED</h1>
-                <p>The main event - we can't access something! Let's make a noise! (And maybe also add the something to our wishlist, read on .)</p>
+                <p>The main event - we can't access something! Let's make a noise!</p>
                 
                 <p>Here is an example in javascript of telling the world you could not access some key research by calling the /blocked API.</p>
             </div>        
@@ -203,9 +203,15 @@ EXPECTS coords_lat, coords_lng, doi, title, author:[], journal, story
 
 ACCEPTS anything else for now
 
-RESPONDS with 200 and the block event ID
+RESPONDS with 200 and an object with "url" for confirmation and "id" the block event ID
 
 ERRORS with 400 and a JSON object containing the error information
+
+<b>/blocked/&lt;id&gt;</b>
+
+It is then possible to GET the given block record back again by appending its ID to the /blocked/ API route
+
+The block record can also be updated by POSTing to it.
 </p></pre>
             </div>
         </div>
@@ -222,9 +228,9 @@ ERRORS with 400 and a JSON object containing the error information
             <div class="col-md-12">
                 <h1>WISHLIST</h1>
                 <p>It would be great to be able to get something once it becomes available. That's what wishlist does - it 
-                records a blocking event and at the same time adds the item to your wishlist.</p>
+                adds the item to your wishlist.</p>
                 
-                <p>Here is an example in javascript of registering a block and adding to your wishlist by calling the /blocked/wishlist API.</p>
+                <p>Here is an example in javascript of registering a block and adding to your wishlist by calling the /wishlist API.</p>
             </div>        
         </div>
 
@@ -232,7 +238,8 @@ ERRORS with 400 and a JSON object containing the error information
             <div class="col-md-6">                
 <pre><p>
 var wishlist = function() {
-    // it's just like blocked but goes to /blocked/wishlist
+    // it's just like blocked but goes to /wishlist
+    // and it only needs the url of the page from which it was submitted
 }
 </p></pre>
 
@@ -245,9 +252,8 @@ var wishlist = function() {
 
             <div class="col-md-6">
 <pre><p>
-<b>/blocked/wishlist</b>
+<b>/wishlist</b>
 
-It's just like /blocked
 </p></pre>
             </div>
         </div>

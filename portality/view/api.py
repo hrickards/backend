@@ -117,15 +117,18 @@ def retrieve():
 def blocked(bid=None):
     if bid is not None:
         e = models.Blocked.pull(bid)
-        if request.method == 'GET':
-            resp = make_response( json.dumps( e.data ) )
-            resp.mimetype = "application/json"
-            return resp
-        elif request.method == 'POST':
+        if request.method == 'POST':
             if request.json:
                 vals = request.json
             else:
                 vals = request.values
+            for k, v in vals.items():
+                if k not in ['submit']:
+                    e.data[k] = v
+            e.save()
+        resp = make_response( json.dumps( e.data ) )
+        resp.mimetype = "application/json"
+        return resp
             
     else:
         try:
@@ -134,13 +137,16 @@ def blocked(bid=None):
             else:
                 vals = request.values
             event = models.Blocked()
-            event.data['coords_lat'] = vals.get('coords_lat','')
+            for k, v in vals.items():
+                if k not in ['submit']:
+                    event.data[k] = v
+            '''event.data['coords_lat'] = vals.get('coords_lat','')
             event.data['coords_lng'] = vals.get('coords_lng','')
             event.data['doi'] = vals.get('doi','')
             event.data['url'] = vals.get('url','')
             event.data['user_id'] = current_user.id
             event.data['user_name'] = current_user.data.get('username','')
-            event.data['user_profession'] = current_user.data.get('profession','')
+            event.data['user_profession'] = current_user.data.get('profession','')'''
             event.save()
             resp = make_response( json.dumps( {'url':vals.get('url',''), 'id':event.id } ) )
             resp.mimetype = "application/json"
@@ -151,7 +157,7 @@ def blocked(bid=None):
             return resp, 400
 
         
-@blueprint.route('/blocked/wishlist', methods=['GET','POST'])
+@blueprint.route('/wishlist', methods=['GET','POST'])
 @util.jsonp
 @login_required
 def wishlist():
@@ -160,15 +166,6 @@ def wishlist():
             vals = request.json
         else:
             vals = request.values
-        event = models.Blocked()
-        event.data['coords_lat'] = vals.get('coords_lat','')
-        event.data['coords_lng'] = vals.get('coords_lng','')
-        event.data['doi'] = vals.get('doi','')
-        event.data['url'] = vals.get('url','')
-        event.data['user_id'] = current_user.id
-        event.data['user_name'] = current_user.data.get('username','')
-        event.data['user_profession'] = current_user.data.get('profession','')
-        event.save()
         wish = models.Wishlist()
         wish.data['url'] = vals.get('url','')
         wish.data['user_id'] = current_user.id
