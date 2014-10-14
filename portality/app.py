@@ -83,6 +83,10 @@ def bookmarklet():
     return render_template("bookmarklet.html")
 
 
+@app.route("/map")
+def map():
+    return render_template("map.html")
+
 
 # TODO: an incomplete start at a possible place to display stories
 # this will actually probably be implemented first in the API
