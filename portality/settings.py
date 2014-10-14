@@ -9,7 +9,7 @@ ADMIN_NAME = "Cottage Labs"
 ADMIN_EMAIL = ""
 
 # service info
-SERVICE_NAME = "open access button"
+SERVICE_NAME = "openaccessbutton.org"
 SERVICE_TAGLINE = ""
 HOST = "0.0.0.0"
 DEBUG = True
@@ -24,7 +24,7 @@ INITIALISE_INDEX = True # whether or not to try creating the index and required 
 SUPER_USER = ["test"]
 
 # Can people register publicly? If false, only the superuser can create new accounts
-PUBLIC_REGISTER = False
+PUBLIC_REGISTER = True
 
 # can anonymous users get raw JSON records via the query endpoint?
 PUBLIC_ACCESSIBLE_JSON = True 
