@@ -642,7 +642,7 @@ if (!Array.prototype.indexOf) {
                 var ajaxopts = {
                     type: options.ajaxtype,
                     url: options.target,
-                    contentType: "application/json; charset=utf-8",
+                    //contentType: "application/json; charset=utf-8",
                     dataType: options.datatype,
                     success: options.showresults
                 };
@@ -869,7 +869,7 @@ if (!Array.prototype.indexOf) {
                     $.ajax({
                         type: options.ajaxtype,
                         url: options.target + '?source=' + JSON.stringify(qry),
-                        contentType: "application/json; charset=utf-8",
+                        //contentType: "application/json; charset=utf-8",
                         dataType: options.datatype,
                         q: q,
                         field: field,

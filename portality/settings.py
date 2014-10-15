@@ -9,7 +9,7 @@ ADMIN_NAME = "Cottage Labs"
 ADMIN_EMAIL = ""
 
 # service info
-SERVICE_NAME = "openaccessbutton.org"
+SERVICE_NAME = "Open Access Button"
 SERVICE_TAGLINE = ""
 HOST = "0.0.0.0"
 DEBUG = True

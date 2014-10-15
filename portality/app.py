@@ -83,7 +83,7 @@ def bookmarklet():
     return render_template("bookmarklet.html")
 
 
-@app.route("/map")
+@app.route("/stories")
 def map():
     return render_template("map.html")
 
