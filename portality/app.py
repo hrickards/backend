@@ -88,8 +88,10 @@ def map():
     return render_template("map.html")
 
 
-# TODO: an incomplete start at a possible place to display stories
-# this will actually probably be implemented first in the API
+@app.route("/story")
+def searchstory():
+    return render_template("searchstory.html")
+
 @app.route("/story/<sid>")
 def story(sid):
     story = models.Record.pull(sid.replace('.json',''))

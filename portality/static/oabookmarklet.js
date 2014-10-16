@@ -1,5 +1,13 @@
 jQuery(document).ready(function() {
 
+    // TODO: this bookmarklet should be updated with the code from the old project that 
+    // pulls title author etc from the page the bookmarklet is opened on
+    // then those useful bits of info should be shown in text input fields 
+    // in a hidden panel of the bookmarklet panel below
+    // if no info can be scraped, some may be returned from the oab.status call
+    // but if none at all can be found, the hidden panel should open and the user 
+    // should be asked to fill in the fields
+
     $('body').append('<div id="oabookmarkletcontainer">' +
         '<h2 id="oabookmarkletheader">Open Access Button</h2>' +
         '<div id="oabookmarklet">' +
@@ -13,29 +21,47 @@ jQuery(document).ready(function() {
     '</div></div>');
     $('#oabookmarkletcontainer').animate({'right':'0'},500);
 
+    // TODO: the bookmarklet needs to know which user API KEY should actually be used
+    // the last bookmarklet appeared to write this directly into the code of the bookmarklet 
+    // code that the user downloaded, so perhaps we just do the same too, so when the user 
+    // saves the bookmarklet from the site their API KEY is written into a var that gets passed in here
+    // I (MM) will look into this further
     oab = new oabutton({
         api: 'http://oabutton.cottagelabs.com/api',
         api_key: 'dc7a3ead-9b46-4883-b378-be4f79851f32'
     });
+
     oab.status({
         data: {url: window.location.href},
         success: function(data) {
+            // TODO: if the status query returns useful info this should be displayed
+            // neatly on the oabutton bookmarklet panel
             $('#oabookmarkletstatus').html('<pre></p>' + JSON.stringify(data,"","    ") + '</p></pre>');
         }
     });
     
     var oabookmarkletblock = function(event) {
         event.preventDefault();
-        var tp = 'blocked';
-        $('#oabookmarkletwishlist').is(':checked') ? tp = 'wishlist' : false;
-        oab[tp]({
+        // TODO: if the tp type is blocked rather than wishlist the data object 
+        // below that is posted to the backend should be populated with extra data
+        // so where the process above that builds the bookmarklet panel scrapes author 
+        // title etc from the page, or asks the user to provide it, the values in those 
+        // fields at the time the block button is pressed triggering this call
+        oab['blocked']({
             data: {
                 url: window.location.href
             },
             success: function() {
-                $('#oabookmarklet').append('<p>' + tp + ' event registered</p>');
+                $('#oabookmarklet').append('<p>Event registered</p>');
             }
         });
+        if ( $('#oabookmarkletwishlist').is(':checked') ) {
+            oab['wishlist']({
+                data: {
+                    url: window.location.href
+                }
+            });
+        }
     }
     $('#oabookmarkletblock').bind('click',oabookmarkletblock);
 
