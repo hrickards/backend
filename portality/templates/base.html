@@ -27,10 +27,10 @@
           <ul class="dropdown-menu" style="background-color:#eee;">
             <li><a href="{{ url_for('account.index') }}{{current_user.id}}">Your account</a></li>
             <li><a href="{{ url_for('account.index') }}logout">Logout</a></li>
+            {% if current_user.is_super %}
             <li class="divider"></li>
             <li><a href="{% if record %}{{ record.url }}{% else %}/index{% endif %}/edit">Edit this page</a></li>
             <li><a href="{% if record %}{{ record.url }}{% else %}/index{% endif %}/settings">Settings for this page</a></li>
-            {% if current_user.is_super %}
             <li class="divider"></li>
             <li><a href="/account">Manage user accounts</a></li>
             {% endif %}
