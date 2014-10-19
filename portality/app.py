@@ -1,7 +1,9 @@
 
-from flask import Flask, request, abort, render_template, make_response, redirect
+from flask import Flask, request, abort, render_template, make_response, redirect, flash
 from flask.views import View
 from flask.ext.login import login_user, current_user
+
+import json
 
 import portality.models as models
 import portality.util as util
@@ -83,25 +85,58 @@ def bookmarklet():
     return render_template("bookmarklet.html")
 
 
+@app.route("/wishlist")
+def wishlist():
+    try:
+        if request.json:
+            vals = request.json
+        else:
+            vals = request.values
+        resp = make_response(json.dumps( current_user.wishlist(**vals) ))
+        resp.mimetype = "application/json"
+        return resp
+    except:
+        abort(404)
+
+@app.route("/blocked")
+def blocked():
+    try:
+        if request.json:
+            vals = request.json
+        else:
+            vals = request.values
+        resp = make_response(json.dumps( current_user.blocked(**vals) ))
+        resp.mimetype = "application/json"
+        return resp
+    except:
+        abort(404)
+
+
 @app.route("/stories")
 def map():
     return render_template("map.html")
-
 
 @app.route("/story")
 def searchstory():
     return render_template("searchstory.html")
 
-@app.route("/story/<sid>")
+@app.route("/story/<path:sid>")
 def story(sid):
-    story = models.Record.pull(sid.replace('.json',''))
-    if story is None: abort(404)
+    story = models.Blocked.pull(sid.replace('.json',''))
+    #story = models.Record.pull(sid.replace('.json',''))
+    if story is not None:
+        about = story.about(sid.replace('.json',''), exclude=story.id)
+    else:
+        about = models.Record.about(sid.replace('.json',''))
+        if about is None:
+            flash('Sorry, there was no story found about ' + sid, 'warning')
+            return redirect('/story')
     if util.request_wants_json() or sid.endswith('.json'):
         resp = make_response( story.json )
         resp.mimetype = "application/json"
         return resp    
     else:
-        return render_template("story.html", story=story.json)
+        return render_template("story.html", story=story, about=about)
 
 
 if __name__ == "__main__":

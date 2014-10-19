@@ -94,11 +94,15 @@ def retrieve():
             vals = request.json
         else:
             vals = request.values
-        exists = models.Account.pull_by_email(vals.get('email',''))
+        if 'username' in vals:
+            exists = models.Account.pull(vals['username'])
+        elif 'email' in vals:
+            exists = models.Account.pull_by_email(vals['email'])
+        else:
+            abort(404)
         if exists is not None:
             if exists.check_password(vals.get('password','')):
-                resp = make_response(json.dumps({'api_key': exists.data['api_key']}))
-                resp.mimetype = "application/json"
+                resp = make_response(json.dumps({'api_key': exists.data['api_key'], 'username': exists.id}))
                 return resp
             else:
                 abort(401)
@@ -111,22 +115,30 @@ def retrieve():
 
 
 @blueprint.route('/blocked', methods=['GET','POST'])
-@blueprint.route('/blocked/<bid>', methods=['GET','POST'])
+@blueprint.route('/blocked/<bid>', methods=['GET','PUT','POST','DELETE'])
 @util.jsonp
 @login_required
 def blocked(bid=None):
     if bid is not None:
         e = models.Blocked.pull(bid)
-        if request.method == 'POST':
+        if request.method in ['PUT','POST','DELETE'] and current_user.id != e.data['author']:
+            abort(401)
+        if request.method in ['PUT','POST']:
             if request.json:
                 vals = request.json
             else:
                 vals = request.values
-            for k, v in vals.items():
-                if k not in ['submit']:
-                    e.data[k] = v
+            if request.method == 'POST':
+                for k, v in vals.items():
+                    if k not in ['submit']:
+                        e.data[k] = v
+            elif request.method == 'PUT':
+                # TODO: there may be things that should not be allowed to be overwritten here
+                e.data = vals
             e.save()
-        resp = make_response( json.dumps( e.data ) )
+        elif request.method == 'DELETE':
+            e.delete()
+        resp = make_response( json.dumps( "" if request.method == 'DELETE' else e.data ) )
         resp.mimetype = "application/json"
         return resp
             

@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="well">
+                How many people need access to this?
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="well">
+                If we found a copy of this article, link to the copy and when it was found
+            </div>
+        </div>
+    </div>
+
+    {% if story %}
+    <div class="row">
+        <div class="col-md-6">
+            <div class="well">
+                User name and profession show here and user image if they have one
+                maybe how long they have been a member, some other interesting stat
+                {% if story.user %}
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="well">
+                <h2>{{ story.story }}</h2>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="well">
+                Maybe links to other stories about things in this journal or by these authors are listed here
+                and perhaps find other relevant works based on the article in question. Also show other info 
+                about the article, like contentmine details about it or other metadata
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="well">
+                <h2>{{ story.title }}</h2>
+                <p>{{", ".join(story.author)}}</p>
+                <p>in {{story.journal}}</p>
+                <p>{{story.url}} {{story.doi}}</p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="well">
+            Are you the author? Share us a copy. DO you know where a copy is whether you are the author or not? Link a copy.
+            Or take action some other way as per action page. Or tell us more about this article.
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="well">
+                {% if about %}
+                <p>List and link to each other story about this url</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+{% endblock %}

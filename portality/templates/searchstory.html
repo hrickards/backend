@@ -2,54 +2,13 @@
 
 {% block content %}
 
-<div class="container">
-
-    {% if current_user.id == account.id or current_user.is_super %}
-
-    <div class="row">
-        <div class="col-md-4" style="border-right:1px solid #c8c8c8;">
-            <h2>{{ account.id }}</h2>
-
-            <form action="" method="POST">
-            <p>Soon you'll be able to change your account details and upload a profile pic (or we'll pull your gravatar if you have one :)</p>
-            </form>
-
-            <hr>
-            
-            <p>Your API key is:<br>
-            <pre><code>{{account.data['api_key']}}</code></pre></p>
-                    
-            <hr>
-            
-            <p><a href="#" id="delete" class="btn btn-danger btn-xs btn-block">Delete your account - cannot be undone!</a></p>
-        </div>
-        
-        <div class="col-md-8">
-            <h2>Your wishlist</h2>
-            <table class="table table-striped table-bordered">
-            {% for w in account.wishlist() %}
-                <tr><td>
-                <a target="_blank" href="{{w.url}}">{{w.url}}</a> on {{w.created_date}}
-                </td></tr>
-            {% endfor %}
-            </table>
-            
-            <h2 style="padding-top:40px;">Coming soon...</h2>
-            <p>A list of the articles you wished for, and received!</p>
-            <p>The ability to create groups of users with related research interests!</p>
-        </div>
+<div id="searchstrap">
+    <div id="searchresults" class="container">
     </div>
-
-    {% else %}
-    <div class="row">
-        <div class="col-md-12">
-            <h2>{{ account.id }}</h2>
-            <p>You are not logged in as this user. Use the <a href="/account/login">login page</a> if you want to change this</p>
-        </div>
-    </div>
-    {% endif %}
-
 </div>
+
+
+
 
 <script>
 jQuery(document).ready(function() {
@@ -57,6 +16,25 @@ jQuery(document).ready(function() {
     function discoveryRecordView(data) {
         var details = '<tr><td>';
         details += '<h4><a href="/story/' + data.id + '">' + data.title + '</a></h4>';
+        details += '<p>';
+        if ( data.author ) {
+            details += 'Author(s): ' + data.author;
+        }
+        if ( data.journal ) {
+            details += ' :: In journal: ' + data.journal;
+        }
+        details += '</p>';
+        details += '<p>On ' + data.accessed + ' <a href="/account/' + data.user_name + '">' + data.user_name;
+        details += '</a> ';
+        if ( data.user_profession && data.user_profession != "Other" ) {
+            details += '(a ' + data.user_profession.toLowerCase() + ') ';
+        }
+        details += 'was unable to access this article';
+        if ( data.story ) {
+            details += ' for the purpose of:<br>' + data.story;
+        }
+        details += '.</p>';
+
         details += '</td></tr>';
         return details;
     }
@@ -80,7 +58,22 @@ jQuery(document).ready(function() {
         var ui = '<div class="graphview">';
         ui += '<div class="row graphview_searcharea">';
 
-        ui += '<div class="col-md-12">';
+        ui += '<div class="col-md-3" style="padding-top:15px;padding-bottom:20px;">';
+        
+        ui += '<h1>STORIES</h1>';
+        ui += '<select class="graphview_suggest searchcontrols" style="border:none;background:none;color:#666;width:250px;">';
+        ui += '<option style="color:' + options.fill("records") + ';" data-value="records">filter by:</option>';
+        for ( var key in options.defaultquery.facets ) {
+            var obj = options.defaultquery.facets[key];
+            if ( key != "range" && obj.term.suggest ) { // TODO: change this in case it is not a term facet?
+                ui += '<option data-value="' + obj.term.field + '" style="color:' + options.fill(obj.term.field) + ';">' + key + '</option>';
+                ui += ', ';
+            }
+        }
+        ui += '</select>';
+        ui += '</div>';
+
+        ui += '<div class="col-md-9">';
 
         ui += '<div style="margin-top:35px;"><input type="text" class="form-control query_string" style="width:97%;" data-option="query.bool.must.query_string.query"></div>';
 
@@ -114,8 +107,8 @@ jQuery(document).ready(function() {
         return ui;
     }
 
-    $('#wishlist').graphview({
-        "target": "/wishlist",
+    $('#searchresults').graphview({
+        "target": "/query/blocked/_search",
         "pushstate": false,
         "titlefield": "name.exact",
         "defaultquery": {
@@ -130,28 +123,32 @@ jQuery(document).ready(function() {
             "size":25,
             "facets":{
                 "Authors": {"term":{"field":"author.exact","suggest":true}},
-                "Journals": {"term":{"field":"journal.exact","suggest":true}}
+                "Journals": {"term":{"field":"journal.exact","suggest":true}},
+                "DOIs": {"term":{"field":"doi.exact","suggest":true}},
+                "User professions": {"term":{"field":"user_profession.exact","suggest":true}},
+                "Story themes (indev)": {"term":{"field":"description","suggest":true}},
+                "Research keywords (indev)": {"term":{"field":"title","suggest":true}}
             }
         },
         showresults: cshowresults,
         uitemplate: cuitemplate
     });
     
-
-    var deleteme = function(event) {
-        event.preventDefault();
-        var conf = confirm("Are you sure you want to delete your account? All your details and your wishlist will be permanently removed. :(");
-        if ( conf ) {
-            $.ajax({
-                'url': window.location,
-                'method': 'DELETE'
-            });
-            window.location = '/';
+    $('.select2-input').bind('focus',function() {
+        if ( !$('.searchcontrols').is(':visible') ) {
+            $('.searchcontrols').fadeIn('slow'); 
         }
+    });
+
+    var closesearch = function(event) {
+        event.preventDefault();
+        $('.searchcontrols').fadeOut('fast');
+        $('#searchstrap').animate({'padding-bottom':'200px'},500);
     }
-    $('#delete').bind('click',deleteme);
+    $('#closesearch').bind('click',closesearch);
+    
 })
 </script>
 
-{% endblock %}
 
+{% endblock %}

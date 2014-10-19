@@ -52,8 +52,8 @@
 {% with messages = get_flashed_messages(with_categories=True) %}
 {% if messages %}
 {% for category, message in messages %}
-<div class="alert alert-{{category}} fade in" data-alert="alert" style="width:100%;z-index:1001;padding:0;">
-    <div class="container" style="padding-top:5px;padding-bottom:5px;">
+<div class="container" style="padding:0;margin-top:0;margin-bottom:0;">
+    <div class="alert alert-{{category}} fade in" data-alert="alert" style="z-index:1001;margin-top:5px;">
         <a class="close" data-dismiss="alert" href="#" style="font-size:1.4em;">&times;</a>
         {{ message }}
     </div>
@@ -77,8 +77,11 @@
                 <img class="img" src="/static/oabutton_logo_final200.png" style="height:200px;">
             </div>
             <div class="col-md-9">
-                <p><input id="id_name" name="name" placeholder="Name (required, preferably full name)" type="text" class="form-control"></p>
-                <p><input id="id_email" name="email" placeholder="Email address (required)" type="text" class="form-control"></p>
+                <form id="signupform" method="post" action="{{url_for('account.register')}}">
+                <p><input id="id_name" name="w" placeholder="Name (required, preferably full name)" type="text" class="form-control"></p>
+                <p><input id="id_email" name="n" placeholder="Email address (required)" type="text" class="form-control"></p>
+                <p><input type="password" name="s" placeholder="password" class="form-control"></p>
+                <p><input type="password" name="c" placeholder="confirm password" class="form-control"></p>
                 <p><select id="id_profession" name="profession" class="form-control">
                     <option value="Student">Student</option>
                     <option value="Doctor">Doctor</option>
@@ -96,18 +99,13 @@
                 <div class="checkbox"><input id="id_confirm_terms" name="confirm_terms" type="checkbox" />
                 <label for="id_confirm_terms" class="confirm-label">I agree to the Open Access Button <a target="_blank" href="/terms">terms and conditions</a></label>
                 </div>
-                <div class="checkbox"><input id="id_mailinglist" name="mailinglist" type="checkbox" />
+                <div class="checkbox"><input id="id_mailinglist" name="mailing_list" type="checkbox" />
                 <label for="id_mailinglist" class="mailinglist-label">I would like to be added to the Open Access Button Mailing List</label>
                 </div>
                 <p style="font-size:0.9em;color:#bbb;">( Your e-mail address will NOT be publicised or shared with third parties. )</p>
-                <p><select id="downloadtype" name="downloadtype" class="form-control">
-                    <option>Platform: Devnote: this will autodetec where possible but can still be manually selected</option>
-                    <option>Chrome</option>
-                    <option>Firefox</option>
-                    <option>Android</option>
-                </select></p>
-
-                <p><button type="submit" class="btn btn-lg btn-block btn-action">get your Open Access Button</button></p>
+                <p><input type="submit" class="btn btn-lg btn-block btn-action" name="submit" value="get your Open Access Button"></p>
+                <p><br><br><br><br><br><br><input id="m" type="text" name="m" /></p>
+                </form>
                 <p>Questions? <a href="/contact" class="action">Contact us</a></p>
             </div>
         </div>
@@ -139,6 +137,40 @@
         </div>
     </div>
 </div>
+
+<script>
+
+jQuery(document).ready(function($) {
+    //$('#m').hide()
+    $('#m').css({
+        "border":"none",
+        "background":"none",
+        "cursor":"default",
+        "-moz-box-shadow":"none",
+        "-webkit-box-shadow":"none",
+        "box-shadow":"none"
+    })
+    var signup = function(event) {
+        event.preventDefault()
+        if ( $('#m').val() == "" ) {
+            $('#signupform').submit()
+        } else {
+            alert("Are you human? If so, don't put anything in that last box...")
+        }
+    }
+    $('#signup').bind('click',signup)
+});
+
+
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-55888420-1', 'auto');
+  ga('require', 'displayfeatures');
+  ga('send', 'pageview');
+</script>
 
 </body>
 </html>

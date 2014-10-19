@@ -37,35 +37,29 @@ class Account(DomainObject, UserMixin):
     def is_super(self):
         return not self.is_anonymous() and self.id in app.config['SUPER_USER']
     
-    @property
-    def wishlist(self):
-        return [ i['_source'] for i in Wishlist.query( terms={'user_id.exact':self.id}, sort=[{'created_date.exact':'desc'}], size=10000 ).get('hits',{}).get('hits',[]) ]
+    def wishlist(self, **kwargs):
+        print self.id
+        return [ i['_source'] for i in Wishlist.query( terms={'user_id.exact':self.id}, sort=[{'created_date.exact':'desc'}], **kwargs ).get('hits',{}).get('hits',[]) ]
 
-    @property
-    def blocked(self):
-        return [ i['_source'] for i in Blocked.query( terms={'user_id.exact':self.id}, sort=[{'created_date.exact':'desc'}], size=10000 ).get('hits',{}).get('hits',[]) ]
+    def blocked(self, **kwargs):
+        return [ i['_source'] for i in Blocked.query( terms={'user_id.exact':self.id}, sort=[{'created_date.exact':'desc'}], **kwargs ).get('hits',{}).get('hits',[]) ]
 
     def delete(self,wishlist=True,blocked=True):
         if wishlist:
-            for i in self.wishlist:
-                w = Wishlist.pull(i['id'])
-                w.delete()
+            w = self.wishlist()
+            while len(w) > 0:
+                for i in w:
+                    wl = Wishlist.pull(i['id'])
+                    wl.delete()
+                w = self.wishlist
         if blocked:
-            for i in self.blocked:
-                b = Blocked.pull(i['id'])
-                b.delete()
+            b = self.blocked()
+            while len(b) > 0:
+                for i in b:
+                    bl = Blocked.pull(i['id'])
+                    bl.delete()
+                b = self.blocked
         r = requests.delete(self.target() + self.id)
-
-
-
-# a typical record object, with no special abilities
-class Wishlist(DomainObject):
-    __type__ = 'wishlist'
-
-    @classmethod
-    def count(cls, url=''):
-        res = cls.query( terms={"url.exact":url} )
-        return res['hits']['total']
 
 
 # a typical record object, with no special abilities
@@ -77,7 +71,57 @@ class Blocked(DomainObject):
         res = cls.query( terms={"url.exact":url} )
         return res['hits']['total']
 
+    @property
+    def user(self):
+        a = Account.pull( self.data.get('author','') )
+        if a is not None:
+            return a.json
+        else:
+            return False
 
+    @property
+    def located(self):
+        return Located.query(terms={'url.exact':self.url})
+
+    @classmethod
+    def about(cls,url,size=100,_from=0,exclude=False):
+        qry = {
+            "query": {
+                "bool": {
+                    "should": [
+                        {
+                            "term": {
+                                "url.exact": url
+                            }
+                        },
+                        {
+                            "term": {
+                                "doi.exact": url
+                            }
+                        }
+                    ]
+                }
+            },
+            "size": size,
+            "from": _from
+        }
+        if exclude:
+            qry["query"]["bool"]["must_not"] = {
+                "term": {
+                    "id.exact": exclude
+                }
+            }
+        return cls.query(q=qry)
+
+
+# a typical record object, with no special abilities
+class Wishlist(Blocked):
+    __type__ = 'wishlist'
+
+
+# a typical record object, with no special abilities
+class Located(DomainObject):
+    __type__ = 'located'
 
 
 # a page manager object, with a couple of extra methods
@@ -118,7 +162,8 @@ class Pages(DomainObject):
         
         
 # a typical record object, with no special abilities
-class Record(DomainObject):
+#class Record(DomainObject):
+class Record(Blocked):
     __type__ = 'record'
 
     

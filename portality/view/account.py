@@ -85,6 +85,8 @@ def username(username):
             resp.mimetype = "application/json"
             return resp
         else:
+            if current_user.is_super:
+                flash('Hi ' + current_user.id + ' - as a super user you can view and edit this account page. Be careful...', 'warning')
             return render_template('account/view.html', account=acc)
 
 
@@ -208,5 +210,5 @@ def register():
         return redirect('/account')
     if request.method == 'POST' and not form.validate():
         flash('Please correct the errors', 'error')
-    return render_template('account/register.html', form=form)
+    return render_template('index.html', form=form)
 

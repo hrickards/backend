@@ -7,6 +7,9 @@ grey is c8c8c8
 white is ffffff
 */
 
+html{
+    background-color:#212f3f;
+}
 html, body{
     margin:0;
     padding:0;
@@ -91,14 +94,14 @@ hr{
     position: relative;
     width: 100%;
     padding: 5px;
-    background: #FFFFFF;
+    background: #212f3f;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     border-radius: 10px;
     margin-bottom:10px;
 }
 .strap .bubble p{
-    color:#212f3f;
+    color:white;
 }
 .bubble:after {
     content: '';
