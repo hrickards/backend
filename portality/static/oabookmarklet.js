@@ -27,8 +27,8 @@ jQuery(document).ready(function() {
     // saves the bookmarklet from the site their API KEY is written into a var that gets passed in here
     // I (MM) will look into this further
     oab = new oabutton({
-        api: 'http://oabutton.cottagelabs.com/api',
-        api_key: 'dc7a3ead-9b46-4883-b378-be4f79851f32'
+        api: 'https://openaccessbutton.org/api',
+        api_key: oabuid
     });
 
     oab.status({

@@ -90,7 +90,7 @@ DEFAULT_SORT = {
 PROCESSORS = {
     "core": {
         "url": "http://core.kmi.open.ac.uk/api/search/",
-        "api_key": "my4PC1OC6J6thk0Y1G8cOa20xJZrMcqs"
+        "api_key": ""
     },
     "contentmine": {
         "url": "http://contentmine.org/api/",

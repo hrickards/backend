@@ -1,10 +1,10 @@
-import uuid, json
+import uuid, json, time
 
 from flask import Blueprint, request, url_for, flash, redirect, make_response
 from flask import render_template, abort
 from flask.ext.login import login_user, logout_user, current_user
 from flask_wtf import Form
-from wtforms.fields import TextField, TextAreaField, SelectField, HiddenField, PasswordField
+from wtforms.fields import TextField, TextAreaField, SelectField, HiddenField, PasswordField, BooleanField
 from wtforms import validators, ValidationError
 
 from portality.core import app
@@ -19,6 +19,7 @@ if len(app.config.get('SUPER_USER',[])) > 0:
     if models.Account.pull(firstsu) is None:
         su = models.Account(id=firstsu)
         su.set_password(firstsu)
+        su.data['api_key'] = firstsu
         su.save()
         print 'superuser account named - ' + firstsu + ' created.'
         print 'default password matches username. Change it.'
@@ -191,6 +192,10 @@ class RegisterForm(Form):
         validators.EqualTo('c', message='Passwords must match')
     ])
     c = PasswordField('Repeat Password')
+    profession = TextField('profession')
+    confirm_public = BooleanField()
+    confirm_terms = BooleanField()
+    mailing_list = BooleanField()
 
 @blueprint.route('/register', methods=['GET', 'POST'])
 def register():
@@ -202,12 +207,19 @@ def register():
         account = models.Account(
             id=form.w.data, 
             email=form.n.data,
+            profession=form.profession.data,
+            confirm_public=form.confirm_public.data,
+            confirm_terms=form.confirm_terms.data,
+            mailing_list=form.mailing_list.data,
             api_key=api_key
         )
         account.set_password(form.s.data)
         account.save()
-        flash('Account created for ' + account.id + '. If not listed below, refresh the page to catch up.', 'success')
-        return redirect('/account')
+        time.sleep(1)
+        user = models.Account.pull(account.id)
+        login_user(user, remember=True)
+        flash('Welcome to your account', 'success')
+        return redirect('/account/' + account.id)
     if request.method == 'POST' and not form.validate():
         flash('Please correct the errors', 'error')
     return render_template('index.html', form=form)

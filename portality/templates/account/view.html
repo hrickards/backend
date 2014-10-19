@@ -16,6 +16,11 @@
 
             <hr>
             
+            <p>Your bookmarklet code is:<br>
+            <pre><code>javascript:(function(){oabuid='{{account.data['api_key']}}';_my_script=document.createElement('SCRIPT');_my_script.type='text/javascript';_my_script.src='{{request.url.replace('//','____').split('/')[0].replace('____','//')}}/static/oabutton_includer.js?';document.getElementsByTagName('head')[0].appendChild(_my_script);}())</code></pre></p>
+            <p>Drag the button to your bookmarks bar:</p>
+            <p><a class="btn btn-info" href="javascript:(function(){oabuid='{{account.data['api_key']}}';_my_script=document.createElement('SCRIPT');_my_script.type='text/javascript';_my_script.src='{{request.url.replace('//','____').split('/')[0].replace('____','//')}}/static/oabutton_includer.js?';document.getElementsByTagName('head')[0].appendChild(_my_script);}())">Open Access Button</a></p>
+            
             <p>Your API key is:<br>
             <pre><code>{{account.data['api_key']}}</code></pre></p>
                     

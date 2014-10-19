@@ -66,7 +66,7 @@
 
 {% block content %}{% endblock %}
 
-{% if current_user.is_anonymous() and request.path.lstrip('/').split('/')[0] not in ['docs','account'] %}
+{% if current_user.is_anonymous() and request.path.lstrip('/').split('/')[0] not in ['docs'] %}
 <a name="download"> </a>
 <div class="strap strap-white">
     <div class="container">
