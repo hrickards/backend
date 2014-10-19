@@ -58,7 +58,7 @@ def medias(path=''):
         else:
             abort(404)
     
-    elif ( ( request.method == 'DELETE' or ( request.method == 'POST' and request.form.get('submit',False) == 'Delete' ) ) and not current_user.is_anonymous() ):
+    elif ( ( request.method == 'DELETE' or ( request.method == 'POST' and request.form.get('submit',False) == 'Delete' ) ) and current_user.is_super ):
         try:
             loc = mediadir + '/' + path
             if os.path.isfile(loc):
@@ -67,7 +67,7 @@ def medias(path=''):
             pass
         return ''
 
-    elif request.method == 'POST' and not current_user.is_anonymous():
+    elif request.method == 'POST' and current_user.is_super:
         # TODO: check the file type meets the allowed ones, and if so put it in media dir
         filename = werkzeug.secure_filename(path)
         out = open(mediadir + '/' + filename, 'w')

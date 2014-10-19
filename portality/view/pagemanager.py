@@ -29,11 +29,11 @@ def edit(path='/'):
     record = models.Pages.pull_by_url(path)
 
     if record is None:
-        if current_user.is_anonymous():
+        if not current_user.is_super:
             abort(404)
         else:
             return redirect('/' + path)
-    elif current_user.is_anonymous() and not (rec.data.get('editable',False) and rec.data.get('accessible',False)):
+    elif not current_user.is_super and not (rec.data.get('editable',False) and rec.data.get('accessible',False)):
         abort(401)
     else:
         if app.config.get('COLLABORATIVE',False):
@@ -57,7 +57,7 @@ def edit(path='/'):
 # a method for managing page settings and creating / deleting pages
 @blueprint.route('/<path:path>/settings', methods=['GET','POST','DELETE'])
 def settings(path='/'):
-    if current_user.is_anonymous():
+    if not current_user.is_super:
         abort(401)
 
     if path != '/': path = '/' + path
@@ -261,7 +261,7 @@ def sync(path=''):
     if url.endswith('.json'): url = url.replace('.json','')
     rec = models.Pages.pull_by_url(url)
 
-    if current_user.is_anonymous():
+    if not current_user.is_super:
         abort(401)
     elif rec is None:
         abort(404)
