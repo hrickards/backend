@@ -104,11 +104,11 @@ $.getScript("https://openaccessbutton.org/static/oabutton.js", function() {
         '<textarea class="form-control" id="oabookmarkletstory" placeholder="' +
         'Tell your story - why were you blocked? What were you trying to do at the time?" style="height:200px;width:265px;"></textarea>' +
         '<input type="checkbox" id="oabookmarkletwishlist"> add this to your wishlist' +
-        '<a class="btn btn-block btn-action" href="#" id="oabookmarkletblock" style="font-size:1.1em;width:275px;"">share your open access story</a>' +
-        '</div>';
+        '<a class="btn btn-block btn-action" href="#" id="oabookmarkletblock" style="font-size:1.1em;width:275px;"">share your open access story</a>';
     if ( founddoi ) {
-        obd += '<p><a href="http://scholar.google.com?q=' + encodeURIComponent(founddoi) + '">Search on Google Scholar</a></p>';
+        obd += '<p><a target="_blank" href="http://scholar.google.com/scholar?q=' + encodeURIComponent(founddoi) + '">Search on Google Scholar</a></p>';
     }
+    obd += '</div>';
     obd += '<div id="oabookmarkletstatus"></div>' +
         '<div id="oabookmarkletbottom"><p><a href="javascript:(function(){$(\'#oabookmarkletcontainer\').remove();})();" class="btn btn-action">close</a></p>' +
     '</div></div>';
