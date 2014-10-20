@@ -61,7 +61,7 @@ $.getScript("https://openaccessbutton.org/static/oabutton.js", function() {
         // title etc from the page, or asks the user to provide it, the values in those 
         // fields at the time the block button is pressed triggering this call
         var rid = guid();
-        oab['blocked',rid]({
+        oab['blocked']({
             data: {
                 url: window.location.href,
                 story: $('#oabookmarkletstory').val(),
@@ -70,7 +70,7 @@ $.getScript("https://openaccessbutton.org/static/oabutton.js", function() {
             success: function() {
                 $('#oabookmarklet').append('<p>Your story has been registered.<br>,a href="https://openaccessbutton.org/story/' + rid + '">View it here</a></p>');
             }
-        });
+        },rid);
         if ( $('#oabookmarkletwishlist').is(':checked') ) {
             oab['wishlist']({
                 data: {
