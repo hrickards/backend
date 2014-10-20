@@ -114,7 +114,7 @@ MEDIA_FOLDER = "media"
 CONTENT_FOLDER = "content"
 
 # etherpad endpoint if available for collaborative editing
-COLLABORATIVE = 'http://pads.cottagelabs.com'
+COLLABORATIVE = 'https://cottagelabs.com/sp'
 
 # when a page is deleted from the index should it also be removed from 
 # filesystem and etherpad (if they are available in the first place)
