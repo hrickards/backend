@@ -107,7 +107,7 @@ $.getScript("https://openaccessbutton.org/static/oabutton.js", function() {
         '<a class="btn btn-block btn-action" href="#" id="oabookmarkletblock" style="font-size:1.1em;width:275px;"">share your open access story</a>' +
         '</div>';
     if ( founddoi ) {
-        obd += '<p><a href="http://scholar.google.com?q=' + encodeURIComponent(founddoi) + '">Search on Google Scholar</a></p>' +
+        obd += '<p><a href="http://scholar.google.com?q=' + encodeURIComponent(founddoi) + '">Search on Google Scholar</a></p>';
     }
     obd += '<div id="oabookmarkletstatus"></div>' +
         '<div id="oabookmarkletbottom"><p><a href="javascript:(function(){$(\'#oabookmarkletcontainer\').remove();})();" class="btn btn-action">close</a></p>' +
