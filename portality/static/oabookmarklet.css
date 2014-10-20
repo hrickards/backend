@@ -37,6 +37,10 @@ white is ffffff
     padding:10px;
     background-color:#212f3f;
     color:#f04717;
+    border-radius: 10px 10px 0px 0px;
+    -moz-border-radius: 10px 10px 0px 0px;
+    -webkit-border-radius: 10px 10px 0px 0px;
+    border: 0px solid #000000;
 }
 #oabookmarklet {
     padding:5px;
