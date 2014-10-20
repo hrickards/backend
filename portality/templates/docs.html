@@ -261,7 +261,7 @@ var wishlist = function() {
 
 
         
-        
+        <!--
         <hr></hr>
         
         
@@ -296,7 +296,7 @@ Coming soon...
 </p></pre>
             </div>
         </div>
-
+        -->
 
 
         
@@ -402,7 +402,7 @@ var successfunctions = {
     },
     wishlist: function(data) {
         $('#wishlistresult').html('<p>The URL has been added to your wishlist. You could view it on your ' + 
-            '<a href="/account/' + client.username + '">user account page</a>.</p>');
+            '<a href="/account/' + client.options.username + '">user account page</a>.</p>');
     }
 }
 // the data required for the various API actions

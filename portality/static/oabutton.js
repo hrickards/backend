@@ -30,7 +30,12 @@ oabutton.prototype = {
         }
         vars.success = function(res) {
             this.response = res;
-            !this.options.api_key && res.api_key ? this.options.api_key = res.api_key : false;
+            if ( !this.options.api_key && res.api_key ) {
+                this.options.api_key = res.api_key;
+            }
+            if ( !this.options.username && res.username ) {
+                this.options.username = res.username;
+            }
             typeof o.success == 'function' ? o.success(res) : false;
         }
         typeof o.error == 'function' ? vars.error = o.error : false;
