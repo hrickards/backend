@@ -274,6 +274,11 @@ def status():
             qv = " AND ".join([ i for i in cm['metadata']['title'].replace(',','').split(' ') if i not in ['and','or','in','of','the','for']][0:3])
             result['core'] = _core(qv)
         
+        if 'doi' in vals:
+            result['crossref'] = _crossref(vals['doi'])
+        elif 'doi' in cm.get('metadata',{}):
+            result['crossref'] = _crossref(cm['metadata']['doi'])
+        
         # academia.edu, researchgate, mendeley?
         # look via other processors if available, and if further info may still be useful
         # contentmine - put in the text miners I wrote to contentmine API, and can submit any articles for processing if not done already
@@ -368,5 +373,14 @@ def _contentmine(value):
         return {"errors": [str(e)]}
 
 
-
+def _crossref(value):
+    # check to see if it is in contentmine
+    url = 'http://data.crossref.org/' + value
+    response = requests.get(url)
+    # if not get contentmine to quickscrape it
+    # then return the metadata about it
+    try:
+        return response.json()
+    except Exception, e:
+        return {"errors": [str(e)]}
 
