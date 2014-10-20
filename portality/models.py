@@ -27,6 +27,14 @@ class Account(DomainObject, UserMixin):
         else:
             return None
 
+    @classmethod
+    def pull_by_api_key(cls,api_key):
+        res = cls.query(q='api_key:"' + api_key + '"')
+        if res.get('hits',{}).get('total',0) == 1:
+            return cls(**res['hits']['hits'][0]['_source'])
+        else:
+            return None
+
     def set_password(self, password):
         self.data['password'] = generate_password_hash(password)
 

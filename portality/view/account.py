@@ -50,6 +50,12 @@ def index():
 @blueprint.route('/<username>', methods=['GET','POST', 'DELETE'])
 def username(username):
     acc = models.Account.pull(username)
+    if acc is None:
+        acc = models.Account.pull_by_email(username)
+        if acc is not None: return redirect('/account/' + acc.id)
+    if acc is None:
+        acc = models.Account.pull_by_api_key(username)
+        if acc is not None: return redirect('/account/' + acc.id)
 
     if acc is None:
         abort(404)
