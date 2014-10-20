@@ -23,6 +23,10 @@ white is ffffff
     -webkit-box-shadow: -10px 10px 80px 30px rgba(33,47,63,0.75);
     -moz-box-shadow: -10px 10px 80px 30px rgba(33,47,63,0.75);
     box-shadow: -10px 10px 80px 30px rgba(33,47,63,0.75);
+    border-radius: 10px 10px 10px 10px;
+    -moz-border-radius: 10px 10px 10px 10px;
+    -webkit-border-radius: 10px 10px 10px 10px;
+    border: 0px solid #000000;
     /*-webkit-box-shadow: -20px 0px 84px 1px rgba(33,47,63,1);
     -moz-box-shadow: -20px 0px 84px 1px rgba(33,47,63,1);
     box-shadow: -20px 0px 84px 1px rgba(33,47,63,1);*/
