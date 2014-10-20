@@ -2,6 +2,18 @@ jQuery(document).ready(function() {
 
 $.getScript("https://openaccessbutton.org/static/oabutton.js", function() {
     
+    var guid = (function() {
+      function s4() {
+        return Math.floor((1 + Math.random()) * 0x10000)
+                   .toString(16)
+                   .substring(1);
+      }
+      return function() {
+        return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+               s4() + '-' + s4() + s4() + s4();
+      };
+    })();
+
     // TODO: this bookmarklet should be updated with the code from the old project that 
     // pulls title author etc from the page the bookmarklet is opened on
     // then those useful bits of info should be shown in text input fields 
@@ -13,13 +25,12 @@ $.getScript("https://openaccessbutton.org/static/oabutton.js", function() {
     $('body').append('<div id="oabookmarkletcontainer">' +
         '<h2 id="oabookmarkletheader">Open Access Button</h2>' +
         '<div id="oabookmarklet">' +
-        '<input type="text" class="form-control" id="oabookmarkleturl" value="' + window.location.href + '">' +
         '<textarea class="form-control" id="oabookmarkletstory" placeholder="' +
         'Tell your story - why were you blocked? What were you trying to do at the time?" style="height:200px;width:265px;"></textarea>' +
         '<input type="checkbox" id="oabookmarkletwishlist"> add this to your wishlist' +
         '<a class="btn btn-block btn-action" href="#" id="oabookmarkletblock" style="font-size:1.1em;width:275px;"">share your open access story</a>' +
         '</div>' +
-        //'<div id="oabookmarkletstatus"></div>' +
+        '<div id="oabookmarkletstatus"></div>' +
         '<div id="oabookmarkletbottom"><p><a href="javascript:(function(){$(\'#oabookmarkletcontainer\').remove();})();" style="text-decoration:none;color:#f04717;">close</a></p>' +
     '</div></div>');
 
@@ -49,13 +60,15 @@ $.getScript("https://openaccessbutton.org/static/oabutton.js", function() {
         // so where the process above that builds the bookmarklet panel scrapes author 
         // title etc from the page, or asks the user to provide it, the values in those 
         // fields at the time the block button is pressed triggering this call
-        oab['blocked']({
+        var rid = guid();
+        oab['blocked',rid]({
             data: {
                 url: window.location.href,
-                story: $('#oabookmarkletstory').val()
+                story: $('#oabookmarkletstory').val(),
+                id: rid
             },
             success: function() {
-                $('#oabookmarklet').append('<p>Event registered</p>');
+                $('#oabookmarklet').append('<p>Your story has been registered.<br>,a href="https://openaccessbutton.org/story/' + rid + '">View it here</a></p>');
             }
         });
         if ( $('#oabookmarkletwishlist').is(':checked') ) {

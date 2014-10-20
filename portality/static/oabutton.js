@@ -49,8 +49,12 @@ oabutton.prototype = {
     status: function(o) {
         this.send('status',o);
     },
-    blocked: function(o) {
-        this.send('blocked',o);
+    blocked: function(o,rid) {
+        var t = 'blocked';
+        if ( rid ) {
+            t += '/' + rid;
+        }
+        this.send(rid,o);
     },
     wishlist: function(o) {
         this.send('wishlist',o);
