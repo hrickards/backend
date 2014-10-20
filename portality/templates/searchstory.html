@@ -24,16 +24,10 @@ jQuery(document).ready(function() {
 
     function discoveryRecordView(data) {
         var details = '<tr><td>';
-        details += '<h4><a href="/story/' + data.id + '">' + data.title + '</a></h4>';
+        details += '<h4><a href="/story/' + data.id + '">' + data.url + '</a></h4>';
         details += '<p>';
-        if ( data.author ) {
-            details += 'Author(s): ' + data.author;
-        }
-        if ( data.journal ) {
-            details += ' :: In journal: ' + data.journal;
-        }
         details += '</p>';
-        details += '<p>On ' + data.accessed + ' <a href="/account/' + data.user_name + '">' + data.user_name;
+        details += '<p>On ' + data.created_date + ' <a href="/account/' + data.author + '">' + data.author;
         details += '</a> ';
         if ( data.user_profession && data.user_profession != "Other" ) {
             details += '(a ' + data.user_profession.toLowerCase() + ') ';
@@ -70,7 +64,7 @@ jQuery(document).ready(function() {
         ui += '<div class="col-md-3" style="padding-top:15px;padding-bottom:20px;">';
         
         ui += '<h1>STORIES</h1>';
-        ui += '<select class="graphview_suggest searchcontrols" style="border:none;background:none;color:#666;width:250px;">';
+        ui += '<select class="graphview_suggest searchcontrols" style="border:none;background:none;color:#666;width:250px;display:none;">';
         ui += '<option style="color:' + options.fill("records") + ';" data-value="records">filter by:</option>';
         for ( var key in options.defaultquery.facets ) {
             var obj = options.defaultquery.facets[key];
