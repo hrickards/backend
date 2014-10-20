@@ -166,9 +166,9 @@ def retrieve():
 @util.jsonp
 @login_required
 @crossdomain(origin='*')
-def blocked(bid=''):
-    e = models.Blocked.pull(bid)
-    if e is not None:
+def blocked(bid=None):
+    if bid is not None:
+        e = models.Blocked.pull(bid)
         if request.method in ['PUT','POST','DELETE'] and current_user.id != e.data['author']:
             abort(401)
         if request.method in ['PUT','POST']:
@@ -206,8 +206,6 @@ def blocked(bid=''):
             event.data['user_id'] = current_user.id
             event.data['user_name'] = current_user.data.get('username','')
             event.data['user_profession'] = current_user.data.get('profession','')'''
-            if bid != '' and event.data.get('id','') != bid:
-                event.data['id'] = bid
             event.save()
             resp = make_response( json.dumps( {'url':vals.get('url',''), 'id':event.id } ) )
             resp.mimetype = "application/json"
