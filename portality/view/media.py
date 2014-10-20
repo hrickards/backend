@@ -51,9 +51,9 @@ def medias(path=''):
         # NOTE: this is only an alternative for when running in debug mode - it delivers images from media folder successfully
         # otherwise you should set your web server (nginx, apache, whatever) to serve GETs on /media/.*
         loc = mediadir + '/' + path
-        if app.config['DEBUG'] and os.path.isfile(loc):
+        if os.path.isfile(loc):
             response = make_response(open(loc).read())
-            response.headers["Content-type"] = "image"
+            #response.headers["Content-type"] = "image"
             return response
         else:
             abort(404)
