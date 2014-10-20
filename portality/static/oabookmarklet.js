@@ -77,8 +77,8 @@ $.getScript("https://openaccessbutton.org/static/oabutton.js", function() {
                     url: window.location.href
                 }
             });
-            $('#oabookmarkletlinks').append("<p>This item has been added to your wishlist. We'll let you know as soon as a copy is available</p>" +
-            '<a target="_blank" class="btn btn-info btn-block" href="https://openaccessbutton.org/account/' + oabuid + '">View your wishlist</a>");
+            $('#oabookmarkletlinks').append("<p>This item has been added to your wishlist. We'll let you know as soon as a copy is available.");
+            $('#oabookmarkletlinks').append('<a target="_blank" class="btn btn-info btn-block" href="https://openaccessbutton.org/account/' + oabuid + '">View your wishlist</a></p>');
         }
     }
     $('#oabookmarkletblock').bind('click',oabookmarkletblock);
