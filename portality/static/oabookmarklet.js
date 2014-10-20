@@ -70,7 +70,7 @@ $.getScript("https://openaccessbutton.org/static/oabutton.js", function() {
             success: function() {
                 $('#oabookmarklet').append('<p>Your story has been registered.<br>,a href="https://openaccessbutton.org/story/' + rid + '">View it here</a></p>');
             }
-        },rid);
+        });
         if ( $('#oabookmarkletwishlist').is(':checked') ) {
             oab['wishlist']({
                 data: {
