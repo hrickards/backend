@@ -348,7 +348,7 @@ document.documentElement.id = "js";
 <div style="text-align:left;position:absolute;top:o;left:0;margin:0;padding:5px;z-index:1000;width:100%;height:35px;background-color:#bbb;color:black;font-size:1.2em;">
 <p style="text-align:left;">THIS IS A MOCK-UP OF THE PAGE AT <a target="_blank" href="http://www.jcheminf.com/content/3/1/47">http://www.jcheminf.com/content/3/1/47</a>
  FOR THE PURPOSE OF DEMONSTRATION OF THE OPEN ACCESS BUTTON BOOKMARKLET. <br>
-<a href="javascript:(function(){oabuid='{% if not current_user.is_anonymous() %}{{current_user.data['api_key']}}{% endif %}';_my_script=document.createElement('SCRIPT');_my_script.type='text/javascript';_my_script.src='{{request.url.replace('//','____').split('/')[0].replace('____','//')}}/static/oabutton_includer.js?';document.getElementsByTagName('head')[0].appendChild(_my_script);}())" style="color:red;">LAUNCH THE BOOKMARKLET</a>
+<a href="javascript:(function(){oabuid='{% if not current_user.is_anonymous() %}{{current_user.data['api_key']}}{% endif %}';_my_script=document.createElement('SCRIPT');_my_script.type='text/javascript';_my_script.src='https://openaccessbutton.org/static/oabutton_includer.js?';document.getElementsByTagName('head')[0].appendChild(_my_script);}())" style="color:red;">LAUNCH THE BOOKMARKLET</a>
 </p>
 </div>
                                 
