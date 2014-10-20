@@ -46,7 +46,6 @@ class Account(DomainObject, UserMixin):
         return not self.is_anonymous() and self.id in app.config['SUPER_USER']
     
     def wishlist(self, **kwargs):
-        print self.id
         return [ i['_source'] for i in Wishlist.query( terms={'user_id.exact':self.id}, sort=[{'created_date.exact':'desc'}], **kwargs ).get('hits',{}).get('hits',[]) ]
 
     def blocked(self, **kwargs):
