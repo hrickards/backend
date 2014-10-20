@@ -14,8 +14,8 @@ white is ffffff
     font-family: 'Raleway', sans-serif;
     text-align:left;
     position:fixed;
-    top:5;
-    right:5;
+    top:5px;
+    right:5px;
     z-index:10000000;
     height:95%;
     width:300px;
