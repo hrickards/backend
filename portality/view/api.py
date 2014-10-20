@@ -215,8 +215,14 @@ def status():
                 
         # look for further information if not already known, by calling the core processor
         if 'title' in cm.get('metadata',{}):
+            t = cm['metadata']['title']
+        elif 'title' in vals:
+            t = vals['title']
+        else:
+            t = False
+        if t:
             #TODO: make a proper ignore list and strip any non-az09 characters
-            qv = " AND ".join([ i for i in cm['metadata']['title'].replace(',','').split(' ') if i not in ['and','or','in','of','the','for']])
+            qv = " AND ".join([ i for i in cm['metadata']['title'].replace(',','').split(' ') if i not in ['and','or','in','of','the','for']][0:3])
             result['core'] = _core(qv)
         
         # academia.edu, researchgate, mendeley?
@@ -281,17 +287,16 @@ def _core(value):
     addr += "?format=json&api_key=" + api_key
     print addr
     response = requests.get(addr)
-    try:
+    if 1==1:
         data = response.json()
         result = {}
         if 'ListRecords' in data and len(data['ListRecords']) != 0:
-            record = data['ListRecords'][0]['record']['metadata']['oai_dc:dc']
-            result['record'] = record
-            result['url'] = record["dc:source"]
+            record = data['ListRecords'][1]['record']['metadata']['oai_dc:dc']
+            result['author'] = record["dc:creator"].replace(' and ',', ').split(', ')
+            result['url'] = 'http://core.kmi.open.ac.uk/download/pdf/' + data['ListRecords'][1]['record']['header']['header:content']['identifier'] + '.pdf'
             result['title'] = record["dc:title"]
-            result['description'] = record["dc:description"]
         return result
-    except:
+    else:
         return {}
 
 

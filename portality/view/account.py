@@ -86,7 +86,7 @@ def username(username):
             resp.mimetype = "application/json"
             return resp
         else:
-            if current_user.is_super:
+            if current_user.is_super and acc.id != current_user.id:
                 flash('Hi ' + current_user.id + ' - as a super user you can view and edit this account page. Be careful...', 'warning')
             return render_template('account/view.html', account=acc)
 
@@ -128,7 +128,7 @@ def login():
         if user is not None and user.check_password(password):
             login_user(user, remember=True)
             flash('Welcome back.', 'success')
-            return form.redirect('index')
+            return redirect('/account/' + user.id)
         else:
             flash('Incorrect username/password', 'error')
     if request.method == 'POST' and not form.validate():
