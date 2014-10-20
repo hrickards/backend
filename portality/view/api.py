@@ -342,7 +342,7 @@ def _core(value):
     addr = url + value
     addr += "?format=json&api_key=" + api_key
     response = requests.get(addr)
-    if 1==1:
+    try:
         data = response.json()
         result = {}
         if 'ListRecords' in data and len(data['ListRecords']) != 0:
@@ -351,7 +351,7 @@ def _core(value):
             result['url'] = 'http://core.kmi.open.ac.uk/download/pdf/' + data['ListRecords'][1]['record']['header']['header:content']['identifier'] + '.pdf'
             result['title'] = record["dc:title"]
         return result
-    else:
+    except:
         return {}
 
 

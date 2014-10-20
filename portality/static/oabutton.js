@@ -47,7 +47,23 @@ oabutton.prototype = {
         this.send('register',o);
     },
     status: function(o) {
-        this.send('status',o);
+        //this.send('status',o);
+        // TODO: annoying behaviour of CORS on POST means this is being fugded as a JSONP GET for now
+        this.options.api_key && !o.data.api_key ? o.data.api_key = this.options.api_key : false;
+        var vars = {
+            type: 'GET',
+            url: this.options.api + '/status',
+            cache: false,
+            context: this,
+            dataType: 'JSONP',
+            data: o.data,
+            success: function(res) {
+                this.response = res;
+                typeof o.success == 'function' ? o.success(res) : false;
+            }
+        }
+        typeof o.error == 'function' ? vars.error = o.error : false;
+        $.ajax(vars);
     },
     blocked: function(o,rid) {
         var t = 'blocked';

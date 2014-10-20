@@ -405,20 +405,20 @@ var successfunctions = {
             '<a href="/account/' + client.options.username + '">user account page</a>.</p>');
     }
 }
-// the data required for the various API actions
-var getdata = {
-    register: {
-        email: 'test@test.com',
-        profession: 'student',
-        username: 'test_' + anid
-    },
-    status: { url: $('#sampleurl').val() },
-    blocked: { url: $('#sampleurl').val() },
-    wishlist: { url: $('#sampleurl').val() },
-}
 // execute the various API actions via the instantiated client
 var performaction = function(event) {
     event.preventDefault();
+    // the data required for the various API actions
+    var getdata = {
+        register: {
+            email: 'test@test.com',
+            profession: 'student',
+            username: 'test_' + anid
+        },
+        status: { url: $('#sampleurl').val() },
+        blocked: { url: $('#sampleurl').val() },
+        wishlist: { url: $('#sampleurl').val() },
+    }
     var a = $(this).attr('href');
     client[a]({
         success: successfunctions[a],
