@@ -21,7 +21,7 @@ oabutton.prototype = {
             type: 'POST',
             url: this.options.api + '/' + action,
             contentType: 'application/json',
-            //dataType: 'JSON',
+            dataType: 'JSON',
             processData: false,
             crossDomain: true,
             cache: false,
