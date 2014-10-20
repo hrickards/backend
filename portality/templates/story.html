@@ -44,23 +44,33 @@
 
     {% if catalogue %}
     {% if catalogue.contentmine %}
+    {% if catalogue.contentmine.metadata %}
     <div class="row">
         <div class="col-md-12">
             <div class="well">
+            {% if catalogue.contentmine.metadata.title %}
             <h2>{{catalogue.contentmine.metadata.title}}</h2>
+            {% endif %}
+            {% if catalogue.contentmine.metadata.author %}
             <p>{{", ".join(catalogue.contentmine.metadata.author)}}</p>
+            {% endif %}
+            {% if catalogue.contentmine.metadata.description %}
             <hr>
             <p>{{catalogue.contentmine.metadata.description}}</p>
+            {% endif %}
             </div>
         </div>
     </div>
     {% endif %}
     {% endif %}
+    {% endif %}
     
+    {% if catalogue.core %}
     {% if catalogue.core.url %}
     <p>This article is available at <a target="_blank" href="{{catalogue.core.url}}">{{catalogue.core.url}}</a>.</p>
     <p>(Soon we will be updating people who try to access something that is available elsewhere automatically - 
     and checking for things becoming available later.)</p>
+    {% endif %}
     {% endif %}
 
     {% if about %}
