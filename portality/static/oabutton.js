@@ -23,7 +23,7 @@ oabutton.prototype = {
             contentType: 'application/json',
             dataType: 'JSON',
             processData: false,
-            crossDomain: true,
+            //crossDomain: true,
             cache: false,
             context: this,
             data: JSON.stringify(o.data)
@@ -54,7 +54,7 @@ oabutton.prototype = {
         if ( rid ) {
             t += '/' + rid;
         }
-        this.send(rid,o);
+        this.send(t,o);
     },
     wishlist: function(o) {
         this.send('wishlist',o);
