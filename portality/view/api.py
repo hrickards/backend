@@ -274,10 +274,10 @@ def status():
             qv = " AND ".join([ i for i in cm['metadata']['title'].replace(',','').split(' ') if i not in ['and','or','in','of','the','for']][0:3])
             result['core'] = _core(qv)
         
-        '''if 'doi' in vals:
+        if 'doi' in vals:
             result['crossref'] = _crossref(vals['doi'])
         elif 'doi' in cm.get('metadata',{}):
-            result['crossref'] = _crossref(cm['metadata']['doi'])'''
+            result['crossref'] = _crossref(cm['metadata']['doi'])
         
         # academia.edu, researchgate, mendeley?
         # look via other processors if available, and if further info may still be useful
@@ -341,7 +341,6 @@ def _core(value):
     api_key = app.config['PROCESSORS']['core']['api_key']
     addr = url + value
     addr += "?format=json&api_key=" + api_key
-    print addr
     response = requests.get(addr)
     if 1==1:
         data = response.json()
@@ -376,7 +375,7 @@ def _contentmine(value):
 def _crossref(value):
     # check to see if it is in contentmine
     url = 'http://data.crossref.org/' + value
-    response = requests.get(url)
+    response = requests.get(url, headers={'accept':'application/json'})
     # if not get contentmine to quickscrape it
     # then return the metadata about it
     try:
