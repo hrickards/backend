@@ -61,6 +61,7 @@ MAPPINGS['account'] = {'account':MAPPINGS['record']['record']}
 MAPPINGS['blocked'] = {'blocked':MAPPINGS['record']['record']}
 MAPPINGS['wishlist'] = {'wishlist':MAPPINGS['record']['record']}
 MAPPINGS['pages'] = {'pages':MAPPINGS['record']['record']}
+MAPPINGS['catalogue'] = {'catalogue':MAPPINGS['record']['record']}
 
 
 # ========================

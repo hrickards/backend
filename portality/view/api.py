@@ -207,6 +207,9 @@ def blocked(bid=None):
             event.data['user_name'] = current_user.data.get('username','')
             event.data['user_profession'] = current_user.data.get('profession','')'''
             event.save()
+            # call the status api and save the output for this URL
+            _status(vals['url'], vals=vals)
+            
             resp = make_response( json.dumps( {'url':vals.get('url',''), 'id':event.id } ) )
             resp.mimetype = "application/json"
             return resp
@@ -252,44 +255,10 @@ def status():
             
         url = vals.get('url',False)
         if not url: abort(404)
+
+        res = _status(url, vals=vals)
         
-        result = {}
-        # find out the block count for this url and anything else we already know about it
-        result['blocked'] = models.Blocked.count(url)
-        result['wishlist'] = models.Wishlist.count(url)
-        
-        # quickscrape the url via contentmine, unless it is already in contentmine
-        cm = _contentmine(url)
-        result['contentmine'] = cm
-                
-        # look for further information if not already known, by calling the core processor
-        if 'title' in cm.get('metadata',{}):
-            t = cm['metadata']['title']
-        elif 'title' in vals:
-            t = vals['title']
-        else:
-            t = False
-        if t:
-            #TODO: make a proper ignore list and strip any non-az09 characters
-            qv = " AND ".join([ i for i in cm['metadata']['title'].replace(',','').split(' ') if i not in ['and','or','in','of','the','for']][0:3])
-            result['core'] = _core(qv)
-        
-        if 'doi' in vals:
-            result['crossref'] = _crossref(vals['doi'])
-        elif 'doi' in cm.get('metadata',{}):
-            result['crossref'] = _crossref(cm['metadata']['doi'])
-        
-        # academia.edu, researchgate, mendeley?
-        # look via other processors if available, and if further info may still be useful
-        # contentmine - put in the text miners I wrote to contentmine API, and can submit any articles for processing if not done already
-        # oag - look for the article licensing criteria
-        # oarr - find relevant repositories?
-        # doaj - can query for journal article by doi or url and get back the article metadata including fulltext link
-        # crossref - get some metadata?
-        
-        # TODO: save what gets found somewhere
-        
-        resp = make_response(json.dumps(result))
+        resp = make_response(json.dumps(res))
         resp.mimetype = "application/json"
         return resp
 
@@ -334,6 +303,62 @@ def testcleanup():
         resp = make_response(json.dumps({'errors': [str(e)]}))
         resp.mimetype = "application/json"
         return resp, 400
+
+
+def _status(url, vals={}, rerun=False):
+    # find out the block count for this url and anything else we already know about it
+    b = models.Blocked.count(url)
+    w = models.Wishlist.count(url)
+    # look for a save of this record
+    found = models.Catalogue.pull_by_url(url)
+    if found is not None and not rerun:
+        result = found.data
+        result['blocked'] = b
+        result['wishlist'] = w
+        return result
+    else:
+        result = {
+            'url': url,
+            'blocked': b,
+            'wishlist': w
+        }
+        
+        # quickscrape the url via contentmine, unless it is already in contentmine
+        cm = _contentmine(url)
+        result['contentmine'] = cm
+                
+        # look for further information if not already known, by calling the core processor
+        if 'title' in cm.get('metadata',{}):
+            t = cm['metadata']['title']
+        elif 'title' in vals:
+            t = vals['title']
+        else:
+            t = False
+        if t:
+            #TODO: make a proper ignore list and strip any non-az09 characters
+            qv = " AND ".join([ i for i in cm['metadata']['title'].replace(',','').split(' ') if i not in ['and','or','in','of','the','for']][0:3])
+            result['core'] = _core(qv)
+        
+        if 'doi' in vals:
+            result['crossref'] = _crossref(vals['doi'])
+        elif 'doi' in cm.get('metadata',{}):
+            result['crossref'] = _crossref(cm['metadata']['doi'])
+        
+        if found is None:
+            found = models.Catalogue()
+        else:
+            result.data['id'] = found.id
+            result.data['created_date'] = found.data['created_date']
+        found.data = result
+        found.save()
+        return result
+        # academia.edu, researchgate, mendeley?
+        # look via other processors if available, and if further info may still be useful
+        # contentmine - put in the text miners I wrote to contentmine API, and can submit any articles for processing if not done already
+        # oag - look for the article licensing criteria
+        # oarr - find relevant repositories?
+        # doaj - can query for journal article by doi or url and get back the article metadata including fulltext link
+        # crossref - get some metadata?
 
 
 def _core(value):

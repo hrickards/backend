@@ -69,6 +69,18 @@ class Account(DomainObject, UserMixin):
         r = requests.delete(self.target() + self.id)
 
 
+class Catalogue(DomainObject):
+    __type__ = 'catalogue'
+
+    @classmethod
+    def pull_by_url(cls,url):
+        res = cls.query(q='url:"' + url + '"')
+        if res.get('hits',{}).get('total',0) == 1:
+            return cls(**res['hits']['hits'][0]['_source'])
+        else:
+            return None
+
+
 # a typical record object, with no special abilities
 class Blocked(DomainObject):
     __type__ = 'blocked'
