@@ -124,14 +124,14 @@ $.getScript("https://openaccessbutton.org/static/oabutton.js", function() {
         api_key: oabuid
     });
 
-    oab.status({
+    /*oab.status({
         data: {url: window.location.href},
         success: function(data) {
             // TODO: if the status query returns useful info this should be displayed
             // neatly on the oabutton bookmarklet panel
             $('#oabookmarkletstatus').html('<pre></p>' + JSON.stringify(data,"","    ") + '</p></pre>');
         }
-    });
+    });*/
     
     var oabookmarkletblock = function(event) {
         event.preventDefault();
