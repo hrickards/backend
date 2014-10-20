@@ -69,15 +69,16 @@ $.getScript("https://openaccessbutton.org/static/oabutton.js", function() {
             }
         });
         $('#oabookmarkletlinks').remove();
-        $('#oabookmarklet').append('<div id="oabookmarkletlinks"><p>Your story has been registered. View it to find more useful information.<br> \
-        <a target="_blank" href="https://openaccessbutton.org/story/' + rid + '">View your story</a></p></div>');
+        $('#oabookmarklet').append('<div id="oabookmarkletlinks"><p><br>Your story has been registered. View it to find more useful information.<br> \
+        <a target="_blank" class="btn btn-info btn-block" href="https://openaccessbutton.org/story/' + rid + '">View your story</a></p></div>');
         if ( $('#oabookmarkletwishlist').is(':checked') ) {
             oab['wishlist']({
                 data: {
                     url: window.location.href
                 }
             });
-            $('#oabookmarkletlinks').append('<p>This item has been added to <a href="https://openaccessbutton.org/account/' + oabuid + '">your wishlist</a>.</p>');
+            $('#oabookmarkletlinks').append("<p>This item has been added to your wishlist. We'll let you know as soon as a copy is available</p>" +
+            '<a target="_blank" class="btn btn-info btn-block" href="https://openaccessbutton.org/account/' + oabuid + '">View your wishlist</a>");
         }
     }
     $('#oabookmarkletblock').bind('click',oabookmarkletblock);
