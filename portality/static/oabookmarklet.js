@@ -21,7 +21,6 @@ $.getScript("https://openaccessbutton.org/static/oabutton.js", function() {
         '<div id="oabookmarkletstatus"></div>' +
         '<div id="oabookmarkletbottom"><p><a href="javascript:(function(){$(\'#oabookmarkletcontainer\').remove();})();" style="text-decoration:none;color:#f04717;">close</a></p>' +
     '</div></div>');
-    $('#oabookmarkletcontainer').animate({'right':'0'},500);
 
     // TODO: the bookmarklet needs to know which user API KEY should actually be used
     // the last bookmarklet appeared to write this directly into the code of the bookmarklet 
