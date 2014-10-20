@@ -274,10 +274,10 @@ def status():
             qv = " AND ".join([ i for i in cm['metadata']['title'].replace(',','').split(' ') if i not in ['and','or','in','of','the','for']][0:3])
             result['core'] = _core(qv)
         
-        if 'doi' in vals:
+        '''if 'doi' in vals:
             result['crossref'] = _crossref(vals['doi'])
         elif 'doi' in cm.get('metadata',{}):
-            result['crossref'] = _crossref(cm['metadata']['doi'])
+            result['crossref'] = _crossref(cm['metadata']['doi'])'''
         
         # academia.edu, researchgate, mendeley?
         # look via other processors if available, and if further info may still be useful
