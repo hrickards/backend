@@ -13,12 +13,13 @@ $.getScript("https://openaccessbutton.org/static/oabutton.js", function() {
     $('body').append('<div id="oabookmarkletcontainer">' +
         '<h2 id="oabookmarkletheader">Open Access Button</h2>' +
         '<div id="oabookmarklet">' +
+        '<input type="text" class="form-control" id="oabookmarkleturl" value="' + window.location.href + '">' +
         '<textarea class="form-control" id="oabookmarkletstory" placeholder="' +
         'Tell your story - why were you blocked? What were you trying to do at the time?" style="height:200px;width:265px;"></textarea>' +
         '<input type="checkbox" id="oabookmarkletwishlist"> add this to your wishlist' +
         '<a class="btn btn-block btn-action" href="#" id="oabookmarkletblock" style="font-size:1.1em;width:275px;"">share your open access story</a>' +
         '</div>' +
-        '<div id="oabookmarkletstatus"></div>' +
+        //'<div id="oabookmarkletstatus"></div>' +
         '<div id="oabookmarkletbottom"><p><a href="javascript:(function(){$(\'#oabookmarkletcontainer\').remove();})();" style="text-decoration:none;color:#f04717;">close</a></p>' +
     '</div></div>');
 
@@ -32,14 +33,14 @@ $.getScript("https://openaccessbutton.org/static/oabutton.js", function() {
         api_key: oabuid
     });
 
-    oab.status({
+    /*oab.status({
         data: {url: window.location.href},
         success: function(data) {
             // TODO: if the status query returns useful info this should be displayed
             // neatly on the oabutton bookmarklet panel
             $('#oabookmarkletstatus').html('<pre></p>' + JSON.stringify(data,"","    ") + '</p></pre>');
         }
-    });
+    });*/
     
     var oabookmarkletblock = function(event) {
         event.preventDefault();
@@ -50,7 +51,8 @@ $.getScript("https://openaccessbutton.org/static/oabutton.js", function() {
         // fields at the time the block button is pressed triggering this call
         oab['blocked']({
             data: {
-                url: window.location.href
+                url: window.location.href,
+                story: $('#oabookmarkletstory').val()
             },
             success: function() {
                 $('#oabookmarklet').append('<p>Event registered</p>');
