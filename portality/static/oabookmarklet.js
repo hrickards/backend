@@ -1,5 +1,7 @@
 jQuery(document).ready(function() {
 
+$.getScript("https://openaccessbutton.org/static/oabutton.js", function() {
+    
     // TODO: this bookmarklet should be updated with the code from the old project that 
     // pulls title author etc from the page the bookmarklet is opened on
     // then those useful bits of info should be shown in text input fields 
@@ -64,5 +66,7 @@ jQuery(document).ready(function() {
         }
     }
     $('#oabookmarkletblock').bind('click',oabookmarkletblock);
+
+});
 
 });

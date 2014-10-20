@@ -2,9 +2,11 @@
 The oabutton API.
 '''
 
+from datetime import timedelta
+
 import json, urllib2, uuid, requests
 
-from flask import Blueprint, request, abort, make_response, redirect
+from flask import Blueprint, request, abort, make_response, redirect, current_app
 from flask.ext.login import current_user
 
 from portality.view.query import query as query
@@ -12,7 +14,7 @@ import portality.models as models
 from portality.core import app
 import portality.util as util
 
-from functools import wraps
+from functools import wraps, update_wrapper
 from flask import g, request, redirect, url_for
 
 
@@ -23,6 +25,48 @@ def login_required(f):
             abort(401)
         return f(*args, **kwargs)
     return decorated_function
+
+
+def crossdomain(origin=None, methods=None, headers=None,
+                max_age=21600, attach_to_all=True,
+                automatic_options=True):
+    if methods is not None:
+        methods = ', '.join(sorted(x.upper() for x in methods))
+    if headers is not None and not isinstance(headers, basestring):
+        headers = ', '.join(x.upper() for x in headers)
+    if not isinstance(origin, basestring):
+        origin = ', '.join(origin)
+    if isinstance(max_age, timedelta):
+        max_age = max_age.total_seconds()
+
+    def get_methods():
+        if methods is not None:
+            return methods
+
+        options_resp = current_app.make_default_options_response()
+        return options_resp.headers['allow']
+
+    def decorator(f):
+        def wrapped_function(*args, **kwargs):
+            if automatic_options and request.method == 'OPTIONS':
+                resp = current_app.make_default_options_response()
+            else:
+                resp = make_response(f(*args, **kwargs))
+            if not attach_to_all and request.method != 'OPTIONS':
+                return resp
+
+            h = resp.headers
+
+            h['Access-Control-Allow-Origin'] = origin
+            h['Access-Control-Allow-Methods'] = get_methods()
+            h['Access-Control-Max-Age'] = str(max_age)
+            if headers is not None:
+                h['Access-Control-Allow-Headers'] = headers
+            return resp
+
+        f.provide_automatic_options = False
+        return update_wrapper(wrapped_function, f)
+    return decorator
     
     
 blueprint = Blueprint('api', __name__)
@@ -31,6 +75,7 @@ blueprint = Blueprint('api', __name__)
 # return the API endpoint
 @blueprint.route('/', methods=['GET','POST'])
 @util.jsonp
+@crossdomain(origin='*')
 def api():
     resp = make_response( json.dumps({
         "README": {
@@ -45,6 +90,7 @@ def api():
 
 @blueprint.route('/register', methods=['GET','POST'])
 @util.jsonp
+@crossdomain(origin='*')
 def register():
     try:
         if request.json:
@@ -88,6 +134,7 @@ def register():
 
 @blueprint.route('/retrieve', methods=['GET','POST'])
 @util.jsonp
+@crossdomain(origin='*')
 def retrieve():
     try:
         if request.json:
@@ -102,7 +149,7 @@ def retrieve():
             abort(404)
         if exists is not None:
             if exists.check_password(vals.get('password','')):
-                resp = make_response(json.dumps({'api_key': exists.data['api_key'], 'username': exists.id}))
+                resp = make_response(json.dumps({'api_key': exists.data.get('api_key','NONE'), 'username': exists.id}))
                 return resp
             else:
                 abort(401)
@@ -118,6 +165,7 @@ def retrieve():
 @blueprint.route('/blocked/<bid>', methods=['GET','PUT','POST','DELETE'])
 @util.jsonp
 @login_required
+@crossdomain(origin='*')
 def blocked(bid=None):
     if bid is not None:
         e = models.Blocked.pull(bid)
@@ -172,6 +220,7 @@ def blocked(bid=None):
 @blueprint.route('/wishlist', methods=['GET','POST'])
 @util.jsonp
 @login_required
+@crossdomain(origin='*')
 def wishlist():
     try:
         if request.json:
@@ -194,6 +243,7 @@ def wishlist():
 @blueprint.route('/status', methods=['GET','POST'])
 @util.jsonp
 @login_required
+@crossdomain(origin='*')
 def status():
     try:
         if request.json:
@@ -249,6 +299,7 @@ def status():
 @blueprint.route('/processor/core/<value>', methods=['GET','POST'])
 @util.jsonp
 @login_required
+@crossdomain(origin='*')
 def core(value):
     try:
         resp = make_response(json.dumps( _core(value) ))
@@ -262,6 +313,7 @@ def core(value):
 
 @blueprint.route('/test/cleanup', methods=['GET','POST'])
 @util.jsonp
+@crossdomain(origin='*')
 def testcleanup():
     try:
         # get all accounts starting with test_ and delete them (which removes their blocks and wishlists too)
