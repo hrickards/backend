@@ -6,80 +6,73 @@
 
 
     <div class="row">
-        <div class="col-md-12">
-            <h1><a target="_blank" href="{{story.url}}">{{story.url}}</a></h1>
-            <p>One of our users needed access to this article and could not get it.</p>
-            <p>Coming soon... we will be making this page more useful, and showing further links 
-            to supporting and related information where available, and asking YOU for help!</p>
-            <p>Can you help right now? Check out <a href="/action">our action page</a>.</p>
-        </div>
-    </div>
-
-    <!--
-    <div class="row">
-        <div class="col-md-6">
-            <div class="well">
-                How many people need access to this?
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="well">
-                If we found a copy of this article, link to the copy and when it was found
-            </div>
-        </div>
-    </div>
-
-    {% if story %}
-    <div class="row">
-        <div class="col-md-6">
-            <div class="well">
-                User name and profession show here and user image if they have one
-                maybe how long they have been a member, some other interesting stat
-                {% if story.user %}
+        {% if story %}
+        <div class="col-md-9">
+            <div class="well" style="background-color:#98fdfd;min-height:300px;">
+                <h1><a target="_blank" href="{{story.url}}">{{story.url}}</a></h1>
+                <p>
+                {% if user %}
+                <a href="/account/{{user.id}}">{{user.id}}</a>
+                {% if user.profession %}
+                (a {{user.profession}})
                 {% endif %}
+                {% else %}
+                One of our users
+                {% endif %}
+                needed access to this article and could not get it.</p>
+                {% if story.story %}
+                <p>{{story.story}}</p>
+                {% endif %}
+                <p>Coming soon... we will be making this page more useful, and showing further links 
+                to supporting and related information where available, and asking YOU for help!</p>
+                <p>Can you help right now? Check out <a href="/action">our action page</a>. Later we'll be asking authors 
+                (and others) to share copies of articles (legally :)</p>
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="well">
-                <h2>{{ story.story }}</h2>
+        {% endif %}
+        {% if catalogue %}
+        <div class="col-md-3">
+            <div class="well" style="background-color:#212f3f;color:white;min-height:300px;">
+                <h2>Blocked: {{catalogue.blocked}}</h2>
+                <h2>Wishlist: {{catalogue.wishlist}}</h2>
+                <hr>
+                <p>These people need access to this article - can you help?</p>
             </div>
         </div>
+        {% endif %}
     </div>
+
+    {% if catalogue %}
+    {% if catalogue.contentmine %}
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-12">
             <div class="well">
-                Maybe links to other stories about things in this journal or by these authors are listed here
-                and perhaps find other relevant works based on the article in question. Also show other info 
-                about the article, like contentmine details about it or other metadata
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="well">
-                <h2>{{ story.title }}</h2>
-                <p>{{", ".join(story.author)}}</p>
-                <p>in {{story.journal}}</p>
-                <p>{{story.url}} {{story.doi}}</p>
+            <h2>{{catalogue.contentmine.metadata.title}}</h2>
+            <p>{{", ".join(catalogue.contentmine.metadata.author)}}</p>
+            <hr>
+            <p>{{catalogue.contentmine.metadata.description}}</p>
             </div>
         </div>
     </div>
     {% endif %}
+    {% endif %}
+    
+    {% if catalogue.core.url %}
+    <p>This article is available at <a target="_blank" href="{{catalogue.core.url}}">{{catalogue.core.url}}</a>.</p>
+    <p>(Soon we will be updating people who try to access something that is available elsewhere automatically - 
+    and checking for things becoming available later.)</p>
+    {% endif %}
 
-    <div class="row">
-        <div class="col-md-6">
-            <div class="well">
-            Are you the author? Share us a copy. DO you know where a copy is whether you are the author or not? Link a copy.
-            Or take action some other way as per action page. Or tell us more about this article.
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="well">
-                {% if about %}
-                <p>List and link to each other story about this url</p>
-                {% endif %}
-            </div>
-        </div>
-    </div>
-    -->
+    {% if about %}
+        <table class="table table-striped table-bordered">
+        {% for a in about.get('hits',{}).get('hits',[]) %}
+            <tr><td>
+            <p><a href="/story/{{a['_source']['id']}}">{{a['_source']['id']}}</a></p>
+            </td></tr>
+        {% endfor %}
+        </table>
+    {% endif %}
+    
 </div>
 
 

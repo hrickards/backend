@@ -124,19 +124,31 @@ def searchstory():
 def story(sid):
     story = models.Blocked.pull(sid.replace('.json',''))
     #story = models.Record.pull(sid.replace('.json',''))
+    turl = None
+    cat = None
+    user = None
     if story is not None:
         about = story.about(sid.replace('.json',''), exclude=story.id)
+        turl = story.data['url']
+        user = models.Account.pull(story.data['author'])
     else:
         about = models.Record.about(sid.replace('.json',''))
-        if about is None:
+        if about.get('hits',{}).get('total',0) == 0:
             flash('Sorry, there was no story found about ' + sid, 'warning')
             return redirect('/story')
+        else:
+            turl = about['hits']['hits'][0]['_source']['url']
+    if turl is not None:
+        c = models.Catalogue.pull_by_url(turl)
+        if c is not None:
+            cat = c.data
     if util.request_wants_json() or sid.endswith('.json'):
         resp = make_response( story.json )
         resp.mimetype = "application/json"
         return resp    
     else:
-        return render_template("story.html", story=story, about=about)
+        # TODO this should not pass all user data, some of that should be stored with the story
+        return render_template("story.html", story=story, about=about, catalogue=cat, user=user.data)
 
 
 if __name__ == "__main__":
