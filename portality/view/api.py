@@ -141,10 +141,12 @@ def retrieve():
             vals = request.json
         else:
             vals = request.values
-        if 'username' in vals:
-            exists = models.Account.pull(vals['username'])
-        elif 'email' in vals:
+        if 'email' in vals:
             exists = models.Account.pull_by_email(vals['email'])
+        elif 'username' in vals:
+            exists = models.Account.pull(vals['username'])
+            if exists is None:
+                exists = models.Account.pull_by_email(vals['username'])
         else:
             abort(404)
         if exists is not None:
